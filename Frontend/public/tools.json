@@ -1,0 +1,222 @@
+[
+  {
+    "id": 1,
+    "name": "ChatGPT",
+    "tagline": "AI-powered conversational assistant",
+    "category": "Productivity",
+    "rating": 4.9,
+    "reviews": 1280,
+    "sponsored": true,
+    "thumbnail": "https://cdn-icons-png.flaticon.com/512/4712/4712109.png",
+    "url": "https://chat.openai.com/"
+  },
+  {
+    "id": 2,
+    "name": "MidJourney",
+    "tagline": "Generate stunning AI images",
+    "category": "Design",
+    "rating": 4.7,
+    "reviews": 980,
+    "sponsored": false,
+    "thumbnail": "https://cdn-icons-png.flaticon.com/512/1995/1995525.png",
+    "url": "https://midjourney.com/"
+  },
+  {
+    "id": 3,
+    "name": "DALL·E 2",
+    "tagline": "AI image generator by OpenAI",
+    "category": "Design",
+    "rating": 4.6,
+    "reviews": 720,
+    "sponsored": false,
+    "thumbnail": "https://cdn-icons-png.flaticon.com/512/3468/3468377.png",
+    "url": "https://openai.com/dall-e-2"
+  },
+  {
+    "id": 4,
+    "name": "Jasper AI",
+    "tagline": "AI content writing assistant",
+    "category": "Writing",
+    "rating": 4.8,
+    "reviews": 1500,
+    "sponsored": true,
+    "thumbnail": "https://cdn-icons-png.flaticon.com/512/3037/3037149.png",
+    "url": "https://jasper.ai/"
+  },
+  {
+    "id": 5,
+    "name": "Copy.ai",
+    "tagline": "Create copy with AI",
+    "category": "Writing",
+    "rating": 4.5,
+    "reviews": 630,
+    "sponsored": false,
+    "thumbnail": "https://cdn-icons-png.flaticon.com/512/1827/1827504.png",
+    "url": "https://copy.ai/"
+  },
+  {
+    "id": 6,
+    "name": "Grammarly",
+    "tagline": "AI grammar and writing checker",
+    "category": "Writing",
+    "rating": 4.9,
+    "reviews": 2000,
+    "sponsored": true,
+    "thumbnail": "https://cdn-icons-png.flaticon.com/512/3079/3079099.png",
+    "url": "https://grammarly.com/"
+  },
+  {
+    "id": 7,
+    "name": "Notion AI",
+    "tagline": "AI features inside Notion",
+    "category": "Productivity",
+    "rating": 4.6,
+    "reviews": 870,
+    "sponsored": false,
+    "thumbnail": "https://cdn-icons-png.flaticon.com/512/1828/1828884.png",
+    "url": "https://notion.so/"
+  },
+  {
+    "id": 8,
+    "name": "QuillBot",
+    "tagline": "AI paraphrasing tool",
+    "category": "Writing",
+    "rating": 4.4,
+    "reviews": 640,
+    "sponsored": false,
+    "thumbnail": "https://cdn-icons-png.flaticon.com/512/609/609034.png",
+    "url": "https://quillbot.com/"
+  },
+  {
+    "id": 9,
+    "name": "Runway ML",
+    "tagline": "Next-gen AI video editor",
+    "category": "Video",
+    "rating": 4.7,
+    "reviews": 520,
+    "sponsored": true,
+    "thumbnail": "https://cdn-icons-png.flaticon.com/512/2541/2541988.png",
+    "url": "https://runwayml.com/"
+  },
+  {
+    "id": 10,
+    "name": "Synthesia",
+    "tagline": "Create AI avatars & videos",
+    "category": "Video",
+    "rating": 4.8,
+    "reviews": 740,
+    "sponsored": false,
+    "thumbnail": "https://cdn-icons-png.flaticon.com/512/483/483947.png",
+    "url": "https://synthesia.io/"
+  },
+  {
+    "id": 11,
+    "name": "Descript",
+    "tagline": "AI video & audio editing",
+    "category": "Video",
+    "rating": 4.6,
+    "reviews": 880,
+    "sponsored": false,
+    "thumbnail": "https://cdn-icons-png.flaticon.com/512/2910/2910768.png",
+    "url": "https://descript.com/"
+  },
+  {
+    "id": 12,
+    "name": "Lumen5",
+    "tagline": "AI-powered video creation",
+    "category": "Video",
+    "rating": 4.5,
+    "reviews": 450,
+    "sponsored": false,
+    "thumbnail": "https://cdn-icons-png.flaticon.com/512/941/941639.png",
+    "url": "https://lumen5.com/"
+  },
+  {
+    "id": 13,
+    "name": "Pictory",
+    "tagline": "Summarize & create videos with AI",
+    "category": "Video",
+    "rating": 4.6,
+    "reviews": 390,
+    "sponsored": false,
+    "thumbnail": "https://cdn-icons-png.flaticon.com/512/2321/2321064.png",
+    "url": "https://pictory.ai/"
+  },
+  {
+    "id": 14,
+    "name": "Otter.ai",
+    "tagline": "AI transcription tool",
+    "category": "Productivity",
+    "rating": 4.7,
+    "reviews": 1100,
+    "sponsored": false,
+    "thumbnail": "https://cdn-icons-png.flaticon.com/512/3208/3208726.png",
+    "url": "https://otter.ai/"
+  },
+  {
+    "id": 15,
+    "name": "Perplexity AI",
+    "tagline": "AI search engine",
+    "category": "Research",
+    "rating": 4.8,
+    "reviews": 650,
+    "sponsored": true,
+    "thumbnail": "https://cdn-icons-png.flaticon.com/512/751/751381.png",
+    "url": "https://perplexity.ai/"
+  },
+  {
+    "id": 16,
+    "name": "Scribe",
+    "tagline": "AI process documentation",
+    "category": "Productivity",
+    "rating": 4.5,
+    "reviews": 420,
+    "sponsored": false,
+    "thumbnail": "https://cdn-icons-png.flaticon.com/512/2921/2921226.png",
+    "url": "https://scribehow.com/"
+  },
+  {
+    "id": 17,
+    "name": "Murf AI",
+    "tagline": "AI voiceover generator",
+    "category": "Audio",
+    "rating": 4.7,
+    "reviews": 550,
+    "sponsored": false,
+    "thumbnail": "https://cdn-icons-png.flaticon.com/512/727/727245.png",
+    "url": "https://murf.ai/"
+  },
+  {
+    "id": 18,
+    "name": "Play.ht",
+    "tagline": "Text to speech with AI voices",
+    "category": "Audio",
+    "rating": 4.6,
+    "reviews": 330,
+    "sponsored": false,
+    "thumbnail": "https://cdn-icons-png.flaticon.com/512/727/727269.png",
+    "url": "https://play.ht/"
+  },
+  {
+    "id": 19,
+    "name": "Krisp",
+    "tagline": "AI noise cancelling app",
+    "category": "Audio",
+    "rating": 4.8,
+    "reviews": 720,
+    "sponsored": true,
+    "thumbnail": "https://cdn-icons-png.flaticon.com/512/727/727218.png",
+    "url": "https://krisp.ai/"
+  },
+  {
+    "id": 20,
+    "name": "Beautiful.ai",
+    "tagline": "AI-powered presentation maker",
+    "category": "Design",
+    "rating": 4.5,
+    "reviews": 490,
+    "sponsored": false,
+    "thumbnail": "https://cdn-icons-png.flaticon.com/512/3135/3135715.png",
+    "url": "https://beautiful.ai/"
+  }
+]
