@@ -2,9 +2,10 @@
 import React, { useState, useEffect, useRef } from "react";
 
 const MENU = [
-  { key: "launches", label: "Launches", items: ["Upcoming", "Recent", "Archive"] },
-  { key: "products", label: "Products", items: ["All Tools", "Categories", "Top Rated"] },
-  { key: "news", label: "News", items: ["Announcements", "Articles", "Guides"] },
+  { key: "Launches", label: "Launches", items: ["Latest Launches", "Upcoming"] },
+  { key: "products", label: "Products", items: ["Top Products", "Categories", "Trending"] },
+  { key: "news", label: "News", items: ["Latest News", "Blogs"] },
+  {key: "Advertise", label: "Advertise"},
 ];
 
 export default function Navbar({setView}) { 
@@ -45,7 +46,7 @@ export default function Navbar({setView}) {
   <div ref={navRef} className="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
   <div className="flex items-center gap-4 h-16">
           {/* Left: Logo */}
-          <div className="flex items-center gap-3">
+          <div className="flex items-center ml-[-230px] gap-3">
             <img src="/logo.png" alt="Logo" className="w-10 h-10 rounded-full object-cover" />
             <span className="text-3xl font-semibold">AI Tool Finder</span>
           </div>
@@ -55,7 +56,17 @@ export default function Navbar({setView}) {
             {MENU.map((m) => (
               <div key={m.key} className="relative">
                 <button
-                  onClick={() => setOpenDropdown((prev) => (prev === m.key ? null : m.key))}
+                  onClick={() => {
+                    if (m.key === "Advertise") {
+                      setView("advertise");
+                      setOpenDropdown(null);
+                    } else if (m.key === "Launches") {
+                      setView("launches");
+                      setOpenDropdown(null);
+                    } else {
+                      setOpenDropdown((prev) => (prev === m.key ? null : m.key));
+                    }
+                  }}
                   className={`px-3 py-2 rounded-md hover:bg-gray-50 transition ${
                     openDropdown === m.key ? "font-medium" : "font-normal"
                   }`}
@@ -66,7 +77,7 @@ export default function Navbar({setView}) {
                 </button>
 
                 {/* dropdown */}
-                {openDropdown === m.key && (
+                {openDropdown === m.key && m.items && (
                   <div
                     className="absolute left-0 mt-2 w-48 bg-white border rounded-lg shadow-lg z-40 animate-fade-in"
                     onMouseLeave={() => setOpenDropdown(null)}
@@ -143,7 +154,19 @@ export default function Navbar({setView}) {
             {MENU.map((m) => (
               <div key={m.key} className="border-b last:border-b-0 pb-2">
                 <button
-                  onClick={() => setMobileAccordion((p) => (p === m.key ? null : m.key))}
+                  onClick={() => {
+                    if (m.key === "Advertise") {
+                      setView("advertise");
+                      setMobileOpen(false);
+                      setMobileAccordion(null);
+                    } else if (m.key === "Launches") {
+                      setView("launches");
+                      setMobileOpen(false);
+                      setMobileAccordion(null);
+                    } else {
+                      setMobileAccordion((p) => (p === m.key ? null : m.key));
+                    }
+                  }}
                   className="w-full flex items-center justify-between px-2 py-3 text-left"
                 >
                   <span className="font-medium">{m.label}</span>
@@ -152,7 +175,7 @@ export default function Navbar({setView}) {
                   </svg>
                 </button>
 
-                {mobileAccordion === m.key && (
+                {mobileAccordion === m.key && m.items && (
                   <div className="mt-1 pl-4 pr-2 pb-2">
                     {m.items.map((it) => (
                       <button

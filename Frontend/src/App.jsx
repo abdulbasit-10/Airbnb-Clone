@@ -6,22 +6,32 @@ import Listings from './pages/listings'
 import SignInPage from "./pages/signIn";
 import SignUpPage from './pages/signUp'
 import Categories from './pages/categories'
-
+import AdvertisePage from './pages/advertise'
+import Launches from './pages/Launches'
 const App = () => {
   const [View, setView] = useState("home")
   return (
     <div className="relative ">
       <Header setView={setView}/> 
-      <Hero/>
-      <Listings />
-      <Categories />
-      <Footer />
-      {View === "signin" &&
-      <SignInPage setView={setView}/>
-      }
-      {View === "signup" && 
-      <SignUpPage setView={setView} />
-      }
+      {View === "launches" ? (
+        <Launches />
+      ) : (
+          View === "advertise" ? (
+            <AdvertisePage />
+          ) : (
+            <></>
+          )
+        )}
+      {View === "home" && (
+        <>
+          <Hero/>
+          <Listings />
+          <Categories />
+          <Footer />
+        </>
+      )}
+      {View === "signin" && <SignInPage setView={setView}/>} 
+      {View === "signup" && <SignUpPage setView={setView} />}
     </div>
   )
 }
