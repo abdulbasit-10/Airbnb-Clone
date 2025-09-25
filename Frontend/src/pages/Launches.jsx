@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import Footer from "../components/footer";
 
 export default function Launches() {
   const [tab, setTab] = useState("latest");
@@ -25,7 +26,8 @@ export default function Launches() {
   const canLoadMore = visibleCount < filtered.length;
 
   return (
-    <div className="max-w-4xl mx-auto py-10">
+    <div className="min-h-screen flex flex-col">
+      <div className="max-w-4xl mx-auto py-10 flex-1">
       <h1 className="text-2xl font-bold mb-6 text-center">Launches</h1>
       <div className="flex justify-center gap-4 mb-8">
         <button
@@ -65,6 +67,8 @@ export default function Launches() {
           </button>
         </div>
       )}
+      </div>
+      <Footer />
     </div>
   );
 }

@@ -1,5 +1,6 @@
 
-import React from "react";
+
+import Footer from "../components/footer";
 
 export default function AdvertisePage() {
 	return (
@@ -61,6 +62,7 @@ export default function AdvertisePage() {
 				<div className="text-sm text-gray-500 mb-4 text-center">Contact us to discuss an advertising package tailored to your specific needs.</div>
 				<button className="bg-green-500 text-white px-10 py-6 rounded-md font-semibold shadow hover:bg-green-600">Contact Sales</button>
 			</div>
-		</div>
-	);
-}
+				<Footer />
+			</div>
+		);
+	}

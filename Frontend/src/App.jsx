@@ -8,6 +8,8 @@ import SignUpPage from './pages/signUp'
 import Categories from './pages/categories'
 import AdvertisePage from './pages/advertise'
 import Launches from './pages/Launches'
+import News from './pages/news';
+
 const App = () => {
   const [View, setView] = useState("home")
   return (
@@ -27,6 +29,7 @@ const App = () => {
           <Hero/>
           <Listings />
           <Categories />
+          <News />
           <Footer />
         </>
       )}

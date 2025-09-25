@@ -46,60 +46,74 @@ export default function Navbar({setView}) {
   <div ref={navRef} className="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
   <div className="flex items-center gap-4 h-16">
           {/* Left: Logo */}
-          <div className="flex items-center ml-[-230px] gap-3">
+          <div className="flex items-center ml-[-100px] gap-3">
             <img src="/logo.png" alt="Logo" className="w-10 h-10 rounded-full object-cover" />
             <span className="text-3xl font-semibold">AI Tool Finder</span>
           </div>
 
           {/* Desktop nav pills */}
-          <nav className="hidden md:flex items-center gap-2 ml-8">
-            {MENU.map((m) => (
-              <div key={m.key} className="relative">
+          <nav className="hidden md:flex items-center gap-8 ml-8">
+            {MENU.filter(m => m.key !== "Advertise").map((m) => (
+              <div
+                key={m.key}
+                className="relative"
+                onMouseEnter={() => setOpenDropdown(m.key)}
+                onMouseLeave={() => setOpenDropdown(null)}
+              >
                 <button
-                  onClick={() => {
-                    if (m.key === "Advertise") {
-                      setView("advertise");
-                      setOpenDropdown(null);
-                    } else if (m.key === "Launches") {
-                      setView("launches");
-                      setOpenDropdown(null);
-                    } else {
-                      setOpenDropdown((prev) => (prev === m.key ? null : m.key));
-                    }
-                  }}
-                  className={`px-3 py-2 rounded-md hover:bg-gray-50 transition ${
-                    openDropdown === m.key ? "font-medium" : "font-normal"
-                  }`}
+                  className={`flex items-center gap-1 px-2 py-2 text-gray-600 font-medium focus:outline-none ${openDropdown === m.key ? "text-green-600" : ""}`}
                   aria-haspopup="true"
                   aria-expanded={openDropdown === m.key}
+                  tabIndex={0}
                 >
                   {m.label}
+                  <svg className={`h-4 w-4 ml-1 transition-transform ${openDropdown === m.key ? "rotate-180" : "rotate-0"}`} fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" /></svg>
                 </button>
-
-                {/* dropdown */}
                 {openDropdown === m.key && m.items && (
-                  <div
-                    className="absolute left-0 mt-2 w-48 bg-white border rounded-lg shadow-lg z-40 animate-fade-in"
-                    onMouseLeave={() => setOpenDropdown(null)}
-                  >
-                    <div className="p-2">
-                      {m.items.map((it) => (
+                  <div className="absolute left-1/2 -translate-x-1/2 mt-2 w-80 bg-white border border-gray-200 rounded-xl shadow-2xl z-40 animate-fade-in p-4">
+                    {m.key === "Launches" ? (
+                      <>
                         <button
-                          key={it}
-                          onClick={() => {
-                            alert(`${m.label} → ${it}`);
-                            setOpenDropdown(null);
-                          }}
-                          className="w-full text-left px-3 py-2 rounded hover:bg-gray-50"
+                          onClick={() => setView("launches")}
+                          className="block w-full text-left mb-4"
                         >
-                          {it}
+                          <div className="font-semibold text-gray-900 text-base">Latest Launches</div>
+                          <div className="text-sm text-gray-500">New AI tools this week</div>
                         </button>
-                      ))}
-                    </div>
+                        <button
+                          onClick={() => setView("launches")}
+                          className="block w-full text-left"
+                        >
+                          <div className="font-semibold text-gray-900 text-base">Upcoming</div>
+                          <div className="text-sm text-gray-400">Soon to be launched</div>
+                        </button>
+                      </>
+                    ) : (
+                      <div className="p-2">
+                        {m.items.map((it) => (
+                          <button
+                            key={it}
+                            onClick={() => {
+                                alert(`${m.label} → ${it}`);
+                              }}
+                            className="w-full text-left px-3 py-2 rounded hover:bg-gray-50"
+                          >
+                            {it}
+                          </button>
+                        ))}
+                      </div>
+                    )}
                   </div>
                 )}
               </div>
             ))}
+            {/* Advertise as a separate button */}
+            <button
+              onClick={() => { setView("advertise"); setOpenDropdown(null); }}
+              className="px-3 py-2 rounded-md text-gray-600 font-medium hover:text-black  transition bg-transparent border-none shadow-none"
+              style={{background: 'none', boxShadow: 'none', border: 'none'}}>
+              Advertise
+            </button>
           </nav>
 
           <div className="flex-1" />
