@@ -1,5 +1,7 @@
 // src/components/Navbar.jsx
 import React, { useState, useEffect, useRef } from "react";
+import DropdownMenu from "./DropdownMenu";
+import { listings } from "../data";
 
 const MENU = [
   { key: "Launches", label: "Launches", items: ["Latest Launches", "Upcoming"] },
