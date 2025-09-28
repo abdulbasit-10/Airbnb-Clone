@@ -1,7 +1,7 @@
 // src/components/Navbar.jsx
 import React, { useState, useEffect, useRef } from "react";
 import DropdownMenu from "./DropdownMenu";
-import { listings } from "../data";
+// import { Link } from "react-router-dom";
 
 const MENU = [
   { key: "Launches", label: "Launches", items: ["Latest Launches", "Upcoming"] },
@@ -48,10 +48,10 @@ export default function Navbar({setView}) {
   <div ref={navRef} className="max-w-7xl px-4 md:px-6 lg:pl-8">
   <div className="flex items-center gap-4 h-16">
           {/* Left: Logo */}
-          <div className="flex items-center gap-3">
+          {/* <Link to="/" className="flex items-center gap-3" style={{ textDecoration: "none" }}>
             <img src="/logo.png" alt="Logo" className="w-10 h-10 rounded-full object-cover" />
             <span className="text-3xl font-semibold">AI Tool Finder</span>
-          </div>
+          </Link> */}
 
           {/* Desktop nav pills */}
           <nav className="hidden md:flex items-center gap-8 ml-8">
@@ -236,4 +236,3 @@ export default function Navbar({setView}) {
     </header>
   );
 }
-

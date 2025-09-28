@@ -9,14 +9,14 @@ import Svg7 from '../assets/Figma.svg';
 import Svg8 from '../assets/Discord.svg';
 
 const LOGOS = [
-  { src: Svg1 , top: "16%", left: "7%", size: 10 },
-  { src: Svg2, top: "19%", left: "28%", size: 10 },
+  { src: Svg1 , top: "20%", left: "7%", size: 10 },
+  { src: Svg2, top: "29%", left: "20%", size: 10 },
   { src: Svg3, top: "38%", left: "8%", size: 10 },
   { src: Svg4, bottom: "7%", left: "13%", size: 10 },
   { src: Svg5, top: "17%", right: "7%", size: 10 },
-  { src: Svg6, top: "38%", right: "13%", size: 10 },
+  { src: Svg6, top: "48%", right: "13%", size: 10 },
   { src: Svg7, bottom: "18%", right: "8%", size: 10 },
-  { src: Svg8, bottom: "7%", right: "28%", size: 10 },
+  { src: Svg8, bottom: "2%", right: "20%", size: 10 },
 ];
 
 export default function HomeHero() {
