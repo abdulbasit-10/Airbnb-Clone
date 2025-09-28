@@ -1,7 +1,7 @@
 // data.js
 export const listings = [
 {
-Image: "../public/fl.svg",
+Image: "../src/assets/Chatgpt.svg",
 name: "Flowshot",
 rating: 4.5,
 description: "A powerful tool for Google Sheets automation, streamlining workflows...",

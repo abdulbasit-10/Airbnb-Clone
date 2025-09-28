@@ -44,11 +44,11 @@ export default function Navbar({setView}) {
 
   return (
     <header className="fixed top-0 left-0 w-full z-50 flex justify-center from-green-50">
-      <div className="w-[95%] bg-white rounded-2xl mt-3 mb-0 border border-gray-100 shadow flex flex-col">
-  <div ref={navRef} className="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
+      <div className="w-[95%] bg-white py-2 rounded-2xl mt-3 mb-0 border border-gray-100 shadow flex flex-col">
+  <div ref={navRef} className="max-w-7xl px-4 md:px-6 lg:pl-8">
   <div className="flex items-center gap-4 h-16">
           {/* Left: Logo */}
-          <div className="flex items-center ml-[-100px] gap-3">
+          <div className="flex items-center gap-3">
             <img src="/logo.png" alt="Logo" className="w-10 h-10 rounded-full object-cover" />
             <span className="text-3xl font-semibold">AI Tool Finder</span>
           </div>

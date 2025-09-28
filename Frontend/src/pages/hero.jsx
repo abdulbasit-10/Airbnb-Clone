@@ -1,22 +1,22 @@
 import React, { useRef } from "react";
-
-/**
- * HomeHero - Hero section with center title, subtitle, search and decorative logos.
- *
- * Usage:
- *  - Place images used below in public/logos/ (or update src paths).
- *  - Import and use in your App: <HomeHero />
- */
+import Svg1 from "../assets/Google.svg";
+import Svg2 from '../assets/microsoft.svg';
+import Svg3 from '../assets/Github.svg'; 
+import Svg4 from '../assets/Linkedin.svg';
+import Svg5 from '../assets/Notion.svg';
+import Svg6 from '../assets/microsoft.svg';
+import Svg7 from '../assets/Figma.svg';
+import Svg8 from '../assets/Discord.svg';
 
 const LOGOS = [
-  { src: "/logos/google.png", top: "16%", left: "7%", size: 10 },
-  { src: "/logos/microsoft.png", top: "19%", left: "28%", size: 10 },
-  { src: "/logos/github.png", top: "38%", left: "8%", size: 10 },
-  { src: "/logos/linkedin.png", bottom: "7%", left: "13%", size: 10 },
-  { src: "/logos/slack.png", top: "17%", right: "7%", size: 10 },
-  { src: "/logos/discord.png", top: "38%", right: "13%", size: 10 },
-  { src: "/logos/notion.png", bottom: "18%", right: "8%", size: 10 },
-  { src: "/logos/openai.png", bottom: "7%", right: "28%", size: 10 },
+  { src: Svg1 , top: "16%", left: "7%", size: 10 },
+  { src: Svg2, top: "19%", left: "28%", size: 10 },
+  { src: Svg3, top: "38%", left: "8%", size: 10 },
+  { src: Svg4, bottom: "7%", left: "13%", size: 10 },
+  { src: Svg5, top: "17%", right: "7%", size: 10 },
+  { src: Svg6, top: "38%", right: "13%", size: 10 },
+  { src: Svg7, bottom: "18%", right: "8%", size: 10 },
+  { src: Svg8, bottom: "7%", right: "28%", size: 10 },
 ];
 
 export default function HomeHero() {
@@ -99,7 +99,7 @@ export default function HomeHero() {
         </div>
 
         {/* search bar */}
-        <div className="mt-10 flex justify-center">
+        <div className="mt-10 flex justify-center"> 
           <div className="w-full max-w-3xl">
             <div className="flex items-center gap-3 bg-white/90 border border-gray-200 rounded-full px-4 py-3 shadow-sm">
               <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden>
@@ -118,17 +118,21 @@ export default function HomeHero() {
                 <span className="hidden sm:inline-flex items-center bg-gray-100 border border-gray-200 px-3 py-1 rounded-full text-xs text-gray-600">
                   ⌘ K
                 </span>
-                <button
-                  className="ml-1 inline-flex items-center justify-center bg-green-500 hover:bg-green-600 text-white rounded-full p-2"
-                  aria-label="Search"
-                >
-                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden>
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-4.35-4.35M11 19a8 8 0 100-16 8 8 0 000 16z"/>
-                  </svg>
-                </button>
               </div>
             </div>
+            
           </div>
+        </div>
+        <div className="flex justify-center">
+            <button
+                  className="flex justify-center w-[63%] mt-5 py-4 bg-green-500 hover:bg-green-600 text-white rounded-full"
+                  aria-label="Search"
+                >
+                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden>
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-4.35-4.35M11 19a8 8 0 100-16 8 8 0 000 16z"/>
+                  </svg>
+                  <span className="ml-2 font-medium">Ask AI To Recommend Tools</span>
+                </button>
         </div>
       </div>
     </section>
