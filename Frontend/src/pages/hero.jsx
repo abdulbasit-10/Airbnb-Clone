@@ -75,7 +75,7 @@ export default function HomeHero() {
       <div className="relative max-w-7xl mx-auto px-6 lg:px-8 py-24">
         {/* top badge */}
         <div className="flex justify-center">
-          <div className="inline-flex items-center gap-2 bg-white/90 border border-green-100 shadow-sm rounded-full px-4 py-1 text-sm">
+          <div className="inline-flex items-center mt-10 gap-2 bg-white/90 border border-green-100 shadow-sm rounded-full px-6 py-3  text-sm">
             <svg width="16" height="16" viewBox="0 0 24 24" className="text-green-600" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden>
               <path d="M12 2L15 9H22L17 13L19 20L12 16L5 20L7 13L2 9H9L12 2Z" fill="currentColor" />
             </svg>

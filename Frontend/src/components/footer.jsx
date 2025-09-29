@@ -11,9 +11,9 @@ export default function Footer() {
           <div>
             <div className="flex items-center gap-2 mb-4">
               <img
-                src="/logo.png"
+                src="/logo.svg"
                 alt="Logo"
-                className="w-8 h-8 rounded-full"
+                className="w-25 h-8 rounded-full"
               />
               <span className="font-bold text-2xl text-green-600">
                 AI Tool Finder

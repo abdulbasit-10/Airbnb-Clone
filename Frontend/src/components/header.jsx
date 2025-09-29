@@ -48,13 +48,13 @@ export default function Navbar({setView}) {
   <div ref={navRef} className="max-w-7xl px-4 md:px-6 lg:pl-8">
   <div className="flex items-center gap-4 h-16">
           {/* Left: Logo */}
-          {/* <Link to="/" className="flex items-center gap-3" style={{ textDecoration: "none" }}>
-            <img src="/logo.png" alt="Logo" className="w-10 h-10 rounded-full object-cover" />
+          <div onClick={() => setView("home")} className="flex items-center gap-3 cursor-pointer" style={{ textDecoration: "none" }}>
+            <img src="/logo.svg" alt="Logo" className="w-40 h-10 rounded-full object-cover" />
             <span className="text-3xl font-semibold">AI Tool Finder</span>
-          </Link> */}
+          </div>
 
           {/* Desktop nav pills */}
-          <nav className="hidden md:flex items-center gap-8 ml-8">
+          <nav className="hidden md:flex items-center gap-5 ml-8">
             {MENU.filter(m => m.key !== "Advertise").map((m) => (
               <div
                 key={m.key}
@@ -72,7 +72,7 @@ export default function Navbar({setView}) {
                   <svg className={`h-4 w-4 ml-1 transition-transform ${openDropdown === m.key ? "rotate-180" : "rotate-0"}`} fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" /></svg>
                 </button>
                 {openDropdown === m.key && m.items && (
-                  <div className="absolute left-1/2 -translate-x-1/2 mt-2 w-80 bg-white border border-gray-200 rounded-xl shadow-2xl z-40 animate-fade-in p-4">
+                  <div className="absolute left-1/2 -translate-x-1/2 mt-0 w-80 bg-white border border-gray-200 rounded-xl shadow-2xl z-40 animate-fade-in p-4">
                     {m.key === "Launches" ? (
                       <>
                         <button
@@ -96,7 +96,11 @@ export default function Navbar({setView}) {
                           <button
                             key={it}
                             onClick={() => {
-                                alert(`${m.label} → ${it}`);
+                                if ( it === "Latest News") {
+                                  setView("news");
+                                } else if (it === "Blogs") {
+                                  setView("blogs");
+                                }
                               }}
                             className="w-full text-left px-3 py-2 rounded hover:bg-gray-50"
                           >

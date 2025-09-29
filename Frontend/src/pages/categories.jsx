@@ -115,13 +115,13 @@ export default function ToolsExplorer() {
         ) : filtered.length === 0 ? (
           <div className="text-center py-12 text-slate-500">No tools found.</div>
         ) : (
-          <section className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
+          <section className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-5">
             {filtered.map((t) => (
               <article
                 key={t.id}
-                className="bg-white rounded-xl border border-gray-200 shadow-sm hover:shadow-md transition p-4 flex flex-col"
+                className="bg-white rounded-xl border h-75 border-gray-200 shadow-sm hover:shadow-md transition p-4 flex flex-col justify-between"
               >
-                <div className="flex items-start gap-3">
+                <div className="flex items-start gap-3 ">
                   <img
                     src={
                       t.thumbnail ||
@@ -133,10 +133,11 @@ export default function ToolsExplorer() {
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-1 mb-1">
                       <span className="font-semibold text-base text-gray-900 truncate">{t.name}</span>
-                      {t.sponsored && (
+                      {/* {t.sponsored && (
                         <span className="ml-1 text-xs bg-pink-100 text-pink-600 px-1.5 py-0.5 rounded-full">🎯</span>
-                      )}
+                      )} */}
                     </div>
+                    <div className="flex items-center gap-1 text-yellow-500"><svg width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M12 17.75L18.16 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.48 4.73L5.82 21z"/></svg> {t.rating || 0}</div>
                     <p className="text-xs text-gray-500 mb-2 line-clamp-2">{t.tagline}</p>
                     <div className="flex flex-wrap gap-1">
                       <span className="bg-gray-100 text-gray-600 text-xs px-2 py-0.5 rounded-full">{t.category || "Other"}</span>
@@ -147,9 +148,8 @@ export default function ToolsExplorer() {
                 </div>
                 {/* Stats row (mocked, as tools.json does not have these fields) */}
                 <div className="mt-4 flex items-center justify-between text-xs text-gray-400">
-                  <div className="flex items-center gap-1"><svg width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg> {t.reviews || 0}</div>
-                  <div className="flex items-center gap-1"><svg width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M12 17.75L18.16 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.48 4.73L5.82 21z"/></svg> {t.rating || 0}</div>
-                  <div className="flex items-center gap-1"><svg width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M17 18a5 5 0 0 1-10 0V7a5 5 0 0 1 10 0v11z"/></svg> 0</div>
+                  <div className="flex items-center gap-1"><svg width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7S1 12 1 12z"/><circle cx="12" cy="12" r="3"/></svg> {t.reviews || 0}</div>
+                  <div className="flex items-center gap-1"><svg width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M5 15l7-7 7 7"/></svg> 0</div>
                 </div>
               </article>
             ))}

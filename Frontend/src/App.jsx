@@ -24,12 +24,16 @@ const App = () => {
             <></>
           )
         )}
+        {
+          View === "News" || View === "news" ? <News /> 
+          : <></>
+        }
       {View === "home" && (
         <>
           <Hero/>
           <Listings />
           <Categories />
-          <News />
+          {/* <News /> */}
           <Footer />
         </>
       )}

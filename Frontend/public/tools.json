@@ -7,7 +7,7 @@
     "rating": 4.9,
     "reviews": 1280,
     "sponsored": true,
-    "thumbnail": "https://cdn-icons-png.flaticon.com/512/4712/4712109.png",
+    "thumbnail": "../src/assets/Chatgpt.svg",
     "url": "https://chat.openai.com/"
   },
   {
