@@ -45,8 +45,8 @@ export default function Navbar({setView}) {
   return (
     <header className="fixed top-0 left-0 w-full z-50 flex justify-center from-green-50">
       <div className="w-[95%] bg-white py-3 rounded-2xl mt-4 mb-0 border border-gray-100 shadow flex flex-col">
-  <div ref={navRef} className="max-w-7xl px-4 md:px-6 lg:pl-8">
-  <div className="flex items-center gap-4 h-16">
+  <div ref={navRef} className="w-full px-4 md:px-6 lg:pl-8">
+  <div className="flex items-center justify-between w-full gap-4 h-16">
           {/* Left: Logo */}
           <div
             onClick={() => setView("home")}
@@ -58,7 +58,7 @@ export default function Navbar({setView}) {
           </div>
 
           {/* Desktop nav pills */}
-          <nav className="hidden md:flex items-center gap-5 ml-8">
+          <nav className="hidden md:flex items-center gap-5">
             {MENU.filter(m => m.key !== "Advertise").map((m) => (
               <div
                 key={m.key}
@@ -127,8 +127,6 @@ export default function Navbar({setView}) {
             </button>
           </nav>
 
-          <div className="flex-1" />
-
           {/* Desktop actions */}
           <div className="hidden md:flex items-center gap-3">
             <button
@@ -144,7 +142,7 @@ export default function Navbar({setView}) {
               Sign up
             </button>
           </div>
-
+          <div className="flex-1" />
           {/* Mobile hamburger */}
           <div className="md:hidden ml-2">
             <button

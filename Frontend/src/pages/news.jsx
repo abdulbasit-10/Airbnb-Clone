@@ -74,12 +74,14 @@ export default function News() {
     <div className="min-h-screen bg-gray-50 pb-10">
       {/* Hero Section */}
       <div className="max-w-3xl mx-auto text-center pt-12 pb-6">
+        {/* Heading first */}
+        <h1 className="text-3xl sm:text-4xl font-extrabold text-purple-700 mb-2">Latest AI News & Updates</h1>
+        {/* SVG icon below heading */}
         <div className="flex justify-center mb-2">
-          <div className="bg-purple-100 rounded-full p-3 inline-flex">
+          <div className="bg-purple-100 rounded-full p-2 inline-flex">
             <svg width="32" height="32" fill="none" viewBox="0 0 24 24"><path fill="#a78bfa" d="M12 2a10 10 0 100 20 10 10 0 000-20zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
           </div>
         </div>
-        <h1 className="text-3xl sm:text-4xl font-extrabold text-purple-700 mb-2">Latest AI News & Updates</h1>
         <p className="text-gray-500 max-w-xl mx-auto">Stay informed with the latest breakthroughs, updates, and developments in the world of artificial intelligence.</p>
       </div>
 
