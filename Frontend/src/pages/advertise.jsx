@@ -1,5 +1,3 @@
-
-
 import Footer from "../components/footer";
 
 export default function AdvertisePage() {
@@ -34,8 +32,8 @@ export default function AdvertisePage() {
 			</div>
 
 			{/* Choose Plan */}
-			<h2 className="text-3xl font-bold text-center mb-6">Choose Your Plan</h2>
-			<div className="flex flex-col items-center mb-10">
+			<h2 className="text-3xl font-bold text-left mb-6 w-full max-w-5xl">Choose Your Plan</h2>
+			<div className="flex flex-col items-start mb-10 w-full max-w-5xl">
 				<div className="bg-white border border-green-200 rounded-xl shadow-lg p-8 w-full max-w-xs flex flex-col items-center">
 					<div className="mb-2">
 						<span className="bg-green-100 text-green-700 text-xs px-2 py-1 rounded-full font-semibold">Most Popular</span>
@@ -57,10 +55,10 @@ export default function AdvertisePage() {
 			</div>
 
 			{/* Custom Solution */}
-			<div className="bg-white rounded-xl shadow p-6 w-full max-w-md flex flex-col items-center mb-10">
-				<div className="font-semibold text-gray-800 mb-2">Need a Custom Solution?</div>
-				<div className="text-sm text-gray-500 mb-4 text-center">Contact us to discuss an advertising package tailored to your specific needs.</div>
-				<button className="bg-green-500 text-white px-10 py-6 rounded-md font-semibold shadow hover:bg-green-600">Contact Sales</button>
+			<div className="bg-white rounded-xl shadow p-15 w-[50%] flex flex-col items-center mb-10">
+				<div className="font-semibold text-3xl text-gray-800 mb-2">Need a Custom Solution?</div>
+				<div className="text-xl text-gray-900 mb-4 text-center">Contact us to discuss an advertising package tailored to your specific needs.</div>
+				<button className="bg-green-500 text-white px-10 py-5 rounded-xl text-xl font-semibold shadow hover:bg-green-600">Contact Sales</button>
 			</div>
 				<Footer />
 			</div>

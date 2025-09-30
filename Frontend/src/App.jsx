@@ -9,6 +9,7 @@ import Categories from './pages/categories'
 import AdvertisePage from './pages/advertise'
 import Launches from './pages/Launches'
 import News from './pages/news';
+import Blogs from './pages/blogs';
 
 const App = () => {
   const [View, setView] = useState("home")
@@ -28,6 +29,9 @@ const App = () => {
           View === "News" || View === "news" ? <News /> 
           : <></>
         }
+        {
+          View === "Blogs" || View === "blogs" ? <Blogs />
+          : <></>}
       {View === "home" && (
         <>
           <Hero/>

@@ -44,13 +44,17 @@ export default function Navbar({setView}) {
 
   return (
     <header className="fixed top-0 left-0 w-full z-50 flex justify-center from-green-50">
-      <div className="w-[95%] bg-white py-2 rounded-2xl mt-3 mb-0 border border-gray-100 shadow flex flex-col">
+      <div className="w-[95%] bg-white py-3 rounded-2xl mt-4 mb-0 border border-gray-100 shadow flex flex-col">
   <div ref={navRef} className="max-w-7xl px-4 md:px-6 lg:pl-8">
   <div className="flex items-center gap-4 h-16">
           {/* Left: Logo */}
-          <div onClick={() => setView("home")} className="flex items-center gap-3 cursor-pointer" style={{ textDecoration: "none" }}>
-            <img src="/logo.svg" alt="Logo" className="w-40 h-10 rounded-full object-cover" />
-            <span className="text-3xl font-semibold">AI Tool Finder</span>
+          <div
+            onClick={() => setView("home")}
+            className="flex items-center cursor-pointer"
+            style={{ textDecoration: "none" }}
+          >
+            <img src="/logo.svg" alt="Logo" className="w-40 h-10 rounded-full object-cover mr-2" />
+            <span className="text-3xl font-semibold whitespace-nowrap">AI Tool Finder</span>
           </div>
 
           {/* Desktop nav pills */}
@@ -104,6 +108,7 @@ export default function Navbar({setView}) {
                               }}
                             className="w-full text-left px-3 py-2 rounded hover:bg-gray-50"
                           >
+                            
                             {it}
                           </button>
                         ))}

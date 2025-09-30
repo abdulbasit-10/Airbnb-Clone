@@ -1,7 +1,7 @@
 // data.js
 export const listings = [
 {
-Image: "../src/assets/Chatgpt.svg",
+Image: "../src/assets/Notion.svg",
 name: "Flowshot",
 rating: 4.5,
 description: "A powerful tool for Google Sheets automation, streamlining workflows...",
@@ -29,6 +29,7 @@ views: 545,
 likes: 1204,
 },
 {
+Image: "../src/assets/Flowshot.svg",
 name: "Rewind",
 rating: 4.5,
 description: "Save anything, including conversations and make them...",
@@ -38,6 +39,7 @@ views: 376,
 likes: 241,
 },
 {
+Image: "../src/assets/Nosto.svg",
 name: "Nosto",
 rating: 4.5,
 description: "An AI-powered platform that delivers personalized shopping experiences...",
