@@ -10,6 +10,7 @@ import AdvertisePage from './pages/advertise'
 import Launches from './pages/Launches'
 import News from './pages/news';
 import Blogs from './pages/blogs';
+import SubmitTool from "./pages/submitTool";
 
 const App = () => {
   const [View, setView] = useState("home")
@@ -41,6 +42,7 @@ const App = () => {
           <Footer />
         </>
       )}
+      {View === "submitTool" && <SubmitTool onClose={() => setView("home")} />}x
       {View === "signin" && <SignInPage setView={setView}/>} 
       {View === "signup" && <SignUpPage setView={setView} />}
     </div>
