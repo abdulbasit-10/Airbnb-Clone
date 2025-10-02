@@ -45,7 +45,7 @@
 
     return (
       <header className="fixed top-0 left-0 w-full z-50 flex justify-center from-green-50">
-        <div className="w-[95%] bg-white py-3 rounded-2xl mt-4 mb-0 border border-gray-100 shadow flex flex-col">
+        <div className="w-[95%] bg-white py-2 rounded-2xl mt-4 mb-0 border border-gray-100 shadow flex flex-col">
     <div ref={navRef} className="w-full px-4 md:px-6 lg:pl-8">
     <div className="flex items-center justify-between w-full gap-4 h-16">
             {/* Left: Logo */}
@@ -55,7 +55,7 @@
               style={{ textDecoration: "none" }}
             >
               <img src="/logo.svg" alt="Logo" className="w-40 h-10 rounded-full object-cover mr-2" />
-              <span className="text-3xl font-semibold whitespace-nowrap">AI Tool Finder</span>
+              <span className="text-2xl font-semibold whitespace-nowrap">AI Tool Finder</span>
             </div>
             
             {/* Desktop nav pills */}
@@ -77,19 +77,19 @@
                     <svg className={`h-4 w-4 ml-1 transition-transform ${openDropdown === m.key ? "rotate-180" : "rotate-0"}`} fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" /></svg>
                   </button>
                   {openDropdown === m.key && m.items && (
-                    <div className="absolute left-1/2 -translate-x-1/2 mt-0 w-80 bg-white border border-gray-200 rounded-xl shadow-2xl z-40 animate-fade-in p-4">
+                    <div className="absolute left-6/3 -translate-x-1/2 mt-0 w-100 bg-white border border-gray-200 rounded-xl shadow-2xl z-40 animate-fade-in p-4">
                       {m.key === "Launches" ? (
                         <>
                           <button
                             onClick={() => setView("launches")}
-                            className="block w-full text-left mb-4"
+                            className="block w-full text-left mb-4 py-3"
                           >
                             <div className="font-semibold text-gray-900 text-base">Latest Launches</div>
-                            <div className="text-sm text-gray-500">New AI tools this week</div>
+                            <div className="text-sm text-gray-500 ">New AI tools this week</div>
                           </button>
                           <button
                             onClick={() => setView("launches")}
-                            className="block w-full text-left"
+                            className="block w-full text-left py-3"
                           >
                             <div className="font-semibold text-gray-900 text-base">Upcoming</div>
                             <div className="text-sm text-gray-400">Soon to be launched</div>
@@ -111,6 +111,7 @@
                             >
                               
                               {it}
+                              <div>Most Popular AI Tools</div>
                             </button>
                           ))}
                         </div>
@@ -143,7 +144,6 @@
                 Sign up
               </button>
             </div>
-            <div className="flex-1" />
             {/* Mobile hamburger */}
             <div className="md:hidden ml-2">
               <button

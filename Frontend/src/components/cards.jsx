@@ -7,7 +7,7 @@ export default function Cards({ data }) {
       {data.map((item, index) => (
         <div
           key={index}
-          className="rounded-2xl shadow p-4 flex flex-col justify-between hover:shadow-lg transition-shadow duration-300"
+          className="rounded-2xl border border-gray-300 p-4 py-10 flex flex-col justify-between hover:shadow-lg transition-shadow duration-300"
         >
           <div className="space-y-3">
             <div className="flex items-center justify-between flex-wrap gap-2">
