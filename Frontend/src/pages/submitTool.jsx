@@ -1,4 +1,6 @@
+// src/pages/submitTool.jsx
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const initialState = {
   name: "",
@@ -17,6 +19,20 @@ const pricingTypes = ["Free", "Paid", "Freemium", "Contact for Pricing"];
 
 export default function SubmitTool({ onClose }) {
   const [form, setForm] = useState(initialState);
+  const navigate = useNavigate();
+
+  // unify closing behavior: prefer onClose prop, otherwise navigate to home
+  const close = () => {
+    if (typeof onClose === "function") {
+      try {
+        onClose();
+        return;
+      } catch (e) {
+        // fall through to navigate
+      }
+    }
+    navigate("/");
+  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -25,10 +41,13 @@ export default function SubmitTool({ onClose }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // TODO: Submit logic here
+    // TODO: Submit logic here (call your backend API)
+    // For demo keep behaviour: notify, reset and close
     alert("Tool submitted! (Demo only)");
     setForm(initialState);
-    if (onClose) onClose();
+
+    // call unified close (onClose or navigate)
+    close();
   };
 
   return (
@@ -39,14 +58,16 @@ export default function SubmitTool({ onClose }) {
       >
         <button
           type="button"
-          onClick={onClose}
+          onClick={close}
           className="absolute top-4 right-4 h-8 w-8 rounded-full border border-gray-200 bg-white flex items-center justify-center text-gray-600 hover:shadow"
           aria-label="Close submit tool modal"
         >
           ✕
         </button>
+
         <h2 className="text-2xl font-bold mb-1">Submit New Tool</h2>
         <p className="text-gray-500 mb-6">Submit a new AI tool to share with the community.</p>
+
         <div className="mb-4">
           <label className="block font-medium mb-1">Tool Name *</label>
           <input
@@ -60,6 +81,7 @@ export default function SubmitTool({ onClose }) {
           />
           <div className="text-xs text-gray-400 mt-1">Minimum 2 characters</div>
         </div>
+
         <div className="mb-4">
           <label className="block font-medium mb-1">Description *</label>
           <textarea
@@ -73,6 +95,7 @@ export default function SubmitTool({ onClose }) {
           />
           <div className="text-xs text-gray-400 mt-1">Minimum 10 characters</div>
         </div>
+
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
           <div>
             <label className="block font-medium mb-1">Website URL *</label>
@@ -99,6 +122,7 @@ export default function SubmitTool({ onClose }) {
             />
           </div>
         </div>
+
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
           <div>
             <label className="block font-medium mb-1">Category *</label>
@@ -111,7 +135,9 @@ export default function SubmitTool({ onClose }) {
             >
               <option value="">Select a category</option>
               {categories.map((cat) => (
-                <option key={cat} value={cat}>{cat}</option>
+                <option key={cat} value={cat}>
+                  {cat}
+                </option>
               ))}
             </select>
           </div>
@@ -126,11 +152,14 @@ export default function SubmitTool({ onClose }) {
             >
               <option value="">Select pricing type</option>
               {pricingTypes.map((p) => (
-                <option key={p} value={p}>{p}</option>
+                <option key={p} value={p}>
+                  {p}
+                </option>
               ))}
             </select>
           </div>
         </div>
+
         <div className="mb-4">
           <label className="block font-medium mb-1">Key Highlights *</label>
           <input
@@ -143,6 +172,7 @@ export default function SubmitTool({ onClose }) {
           />
           <div className="text-xs text-gray-400 mt-1">Enter features separated by commas</div>
         </div>
+
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
           <div>
             <label className="block font-medium mb-1">Twitter URL</label>
@@ -167,10 +197,11 @@ export default function SubmitTool({ onClose }) {
             />
           </div>
         </div>
+
         <div className="flex justify-end gap-3 mt-6">
           <button
             type="button"
-            onClick={onClose}
+            onClick={close}
             className="px-6 py-2 rounded-md border border-green-400 text-green-600 font-semibold bg-white hover:bg-green-50"
           >
             Cancel
@@ -186,4 +217,3 @@ export default function SubmitTool({ onClose }) {
     </div>
   );
 }
-

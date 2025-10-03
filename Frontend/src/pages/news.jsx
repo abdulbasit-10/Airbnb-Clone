@@ -1,4 +1,6 @@
+// src/pages/new.jsx
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 
 const FILTERS = [
   { key: "all", label: "All" },
@@ -100,8 +102,12 @@ export default function News() {
 
       {/* News Cards */}
       <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-7 px-4">
-        {filteredNews.map((n, i) => (
-          <div key={n.id} className="bg-white rounded-2xl shadow-lg overflow-hidden flex flex-col h-full">
+        {filteredNews.map((n) => (
+          <Link
+            key={n.id}
+            to={`/news/${n.id}`}
+            className="block bg-white rounded-2xl shadow-lg overflow-hidden flex flex-col h-full no-underline hover:shadow-xl transition"
+          >
             <div className="relative h-44 w-full overflow-hidden">
               <img src={n.image} alt={n.title} className="object-cover w-full h-full" />
               <div className="absolute top-3 left-3 bg-purple-600 text-white text-xs px-3 py-1 rounded-full font-semibold shadow">{n.tag}</div>
@@ -118,7 +124,7 @@ export default function News() {
                 <span className="text-xs px-2 py-1 rounded-full bg-gray-100 text-gray-600 font-medium">{FILTERS.find(f => f.key === n.filter)?.label || n.filter}</span>
               </div>
             </div>
-          </div>
+          </Link>
         ))}
       </div>
     </div>

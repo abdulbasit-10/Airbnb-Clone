@@ -1,4 +1,6 @@
+// src/pages/hero.jsx
 import React, { useRef } from "react";
+import { useNavigate } from "react-router-dom";
 import Svg1 from "../assets/Google.svg";
 import Svg2 from '../assets/microsoft.svg';
 import Svg3 from '../assets/Github.svg'; 
@@ -21,6 +23,7 @@ const LOGOS = [
 
 export default function HomeHero() {
   const searchRef = useRef(null);
+  const navigate = useNavigate();
 
   // optional: press "/" or "k" to focus search (nice UX)
   React.useEffect(() => {
@@ -36,6 +39,18 @@ export default function HomeHero() {
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
   }, []);
+
+  const submitSearch = (e) => {
+    if (e && e.preventDefault) e.preventDefault();
+    const q = (searchRef.current?.value || "").trim();
+    // Navigate to products page with query param. Products page can read via useSearchParams()
+    if (q) {
+      navigate(`/products?q=${encodeURIComponent(q)}`);
+    } else {
+      // if empty, just go to products listing
+      navigate(`/products`);
+    }
+  };
 
   return (
     <section className="relative overflow-hidden bg-gradient-to-r from-green-50  to-indigo-50/60">
@@ -99,7 +114,7 @@ export default function HomeHero() {
         </div>
 
         {/* search bar */}
-        <div className="mt-10 flex justify-center"> 
+        <form onSubmit={submitSearch} className="mt-10 flex justify-center"> 
           <div className="w-full max-w-3xl">
             <div className="flex items-center gap-3 bg-white/90 border border-gray-200 rounded-full px-4 py-3 shadow-sm">
               <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden>
@@ -108,10 +123,15 @@ export default function HomeHero() {
 
               <input
                 ref={searchRef}
+                name="q"
                 type="search"
                 placeholder="Search for any tool..."
                 className="flex-1 text-sm sm:text-base outline-none bg-transparent"
                 aria-label="Search tools"
+                onKeyDown={(e) => {
+                  // Enter handled by form; optionally handle Escape to blur
+                  if (e.key === "Escape") e.currentTarget.blur();
+                }}
               />
 
               <div className="ml-3 flex items-center gap-2">
@@ -122,21 +142,21 @@ export default function HomeHero() {
             </div>
             
           </div>
-        </div>
+        </form>
+
         <div className="flex justify-center">
-            <button
-                  className="flex justify-center w-[63%] mt-5 py-4 bg-green-500 hover:bg-green-600 text-white rounded-full"
-                  aria-label="Search"
-                >
-                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden>
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-4.35-4.35M11 19a8 8 0 100-16 8 8 0 000 16z"/>
-                  </svg>
-                  <span className="ml-2 font-medium">Ask AI To Recommend Tools</span>
-                </button>
+          <button
+            onClick={submitSearch}
+            className="flex justify-center w-[63%] mt-5 py-4 bg-green-500 hover:bg-green-600 text-white rounded-full"
+            aria-label="Search"
+          >
+            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden>
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-4.35-4.35M11 19a8 8 0 100-16 8 8 0 000 16z"/>
+            </svg>
+            <span className="ml-2 font-medium">Ask AI To Recommend Tools</span>
+          </button>
         </div>
       </div>
     </section>
   );
 }
-
-

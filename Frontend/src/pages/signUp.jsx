@@ -1,12 +1,52 @@
+// src/pages/signUp.jsx
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
 function SignUpModal({ setView }) {
+  const navigate = useNavigate();
+
+  const close = () => {
+    if (typeof setView === "function") {
+      try {
+        setView("");
+        setView("home");
+      } catch (e) {}
+    }
+    navigate("/");
+  };
+
+  const goToSignIn = () => {
+    if (typeof setView === "function") {
+      try {
+        setView("signin");
+      } catch (e) {}
+    }
+    navigate("/signin");
+  };
+
+  const handleContinue = () => {
+    // Placeholder: normally you'd create the account and then redirect
+    if (typeof setView === "function") {
+      try {
+        setView("home");
+      } catch (e) {}
+    }
+    navigate("/");
+  };
+
+  const handleGoogle = () => {
+    // placeholder for Google OAuth flow
+    console.log("Google sign up clicked");
+    handleContinue();
+  };
+
   return (
     <div
       className="absolute top-0 inset-0 z-50 flex items-center justify-center px-4 py-6 bg-black/50"
       role="dialog"
       aria-modal="true"
       aria-label="Sign up modal"
+      onClick={close}
     >
       <div
         className="relative w-full max-w-md mx-auto"
@@ -16,10 +56,7 @@ function SignUpModal({ setView }) {
           {/* Close button */}
           <button
             type="button"
-            onClick={() => {
-                setView("");
-              console.log("Close button clicked");
-            }}
+            onClick={close}
             className="absolute top-4 right-4 h-8 w-8 rounded-full border border-gray-200 bg-white flex items-center justify-center text-gray-600 hover:shadow"
             aria-label="Close sign up modal"
           >
@@ -31,18 +68,18 @@ function SignUpModal({ setView }) {
               Create your account
             </h2>
             <p className="mt-2 text-center text-sm text-gray-500">
-              Welcome! Please fill in the details to get startd.
+              Welcome! Please fill in the details to get started.
             </p>
 
             {/* Google button */}
             <div className="mt-6">
               <button
                 type="button"
-                onClick={() => console.log("Google button clicked")}
+                onClick={handleGoogle}
                 className="w-full flex items-center justify-center gap-3 px-4 py-3 border border-gray-200 rounded-md shadow-sm hover:shadow focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-300"
               >
                 {/* Google SVG */}
-                <svg width="20" height="20" viewBox="0 0 48 48" className="mr-1" xmlns="http://www.w3.org/2000/svg">
+                <svg width="20" height="20" viewBox="0 0 48 48" className="mr-1" xmlns="http://www.w3.org/2000/svg" aria-hidden>
                   <g>
                     <path fill="#4285F4" d="M24 9.5c3.54 0 6.73 1.22 9.23 3.22l6.9-6.9C36.62 2.54 30.7 0 24 0 14.64 0 6.4 5.48 2.44 13.44l8.06 6.27C12.6 13.09 17.85 9.5 24 9.5z"/>
                     <path fill="#34A853" d="M46.1 24.5c0-1.64-.15-3.22-.43-4.75H24v9.02h12.45c-.54 2.9-2.17 5.36-4.62 7.02l7.18 5.59C43.98 37.36 46.1 31.41 46.1 24.5z"/>
@@ -89,7 +126,6 @@ function SignUpModal({ setView }) {
                 tabIndex={-1}
                 className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-700"
                 aria-label="Show password"
-                // Add onClick logic for toggling password visibility if needed
               >
                 <svg width="22" height="22" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
                   <path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7S1 12 1 12z"/>
@@ -100,7 +136,7 @@ function SignUpModal({ setView }) {
 
             <button
               type="button"
-              onClick={() => console.log("Continue clicked")}
+              onClick={handleContinue}
               className="mt-5 w-full inline-flex items-center justify-center gap-2 px-4 py-2 bg-green-400 text-white font-medium rounded-md shadow hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-300"
             >
               Continue
@@ -110,7 +146,7 @@ function SignUpModal({ setView }) {
               Already have an account?{" "}
               <button
                 type="button"
-                onClick={() => setView("signIn")}
+                onClick={goToSignIn}
                 className="text-green-600 font-medium hover:underline"
               >
                 Sign in
@@ -129,7 +165,7 @@ function SignUpModal({ setView }) {
   );
 }
 
-export default function SignUpPage({setView}) {
+export default function SignUpPage({ setView }) {
   return (
     <div className="h-screen absolute w-[100%] top-0 flex items-center justify-center bg-gray-100/50">
       {/* Modal */}

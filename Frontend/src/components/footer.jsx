@@ -1,6 +1,7 @@
 // src/components/Footer.jsx
 import React from "react";
 import { Mail } from "lucide-react";
+import { Link } from "react-router-dom";
 
 export default function Footer() {
   return (
@@ -24,7 +25,6 @@ export default function Footer() {
             </p>
             <div className="flex items-center gap-2 text-gray-600 text-sm">
               <Mail size={18} />
-              {/* <span>info@aitoolfinder.com</span> */}
             </div>
           </div>
 
@@ -32,11 +32,11 @@ export default function Footer() {
           <div>
             <h4 className="font-semibold mb-3">Products</h4>
             <ul className="space-y-2 text-gray-600 text-sm font-semibold">
-              <li><a href="#">Latest Launches</a></li>
-              <li><a href="#">Top Products</a></li>
-              <li><a href="#">Upcoming</a></li>
-              <li><a href="#">Categories</a></li>
-              <li><a href="#">Trending</a></li>
+              <li><Link to="/launches">Latest Launches</Link></li>
+              <li><Link to="/products">Top Products</Link></li>
+              <li><Link to="/launches">Upcoming</Link></li>
+              <li><Link to="/categories">Categories</Link></li>
+              <li><Link to="/products">Trending</Link></li>
             </ul>
           </div>
 
@@ -44,10 +44,10 @@ export default function Footer() {
           <div>
             <h4 className="font-semibold mb-3">Resources</h4>
             <ul className="space-y-2 text-gray-600 text-sm font-semibold">
-              <li><a href="#">Blog</a></li>
-              <li><a href="#">Latest News</a></li>
-              <li><a href="#">Guides</a></li>
-              <li><a href="#">Advertise</a></li>
+              <li><Link to="/blogs">Blog</Link></li>
+              <li><Link to="/news">Latest News</Link></li>
+              <li><a href="#">Guides</a></li> {/* Replace with Link when you add route */}
+              <li><Link to="/advertise">Advertise</Link></li>
             </ul>
           </div>
 
@@ -77,10 +77,10 @@ export default function Footer() {
         <div className="border-t mt-10 pt-6 flex flex-col md:flex-row items-center justify-between font-semibold text-sm text-gray-600">
           <p>© 2024 AI Tool Finder. All rights reserved.</p>
           <div className="flex gap-4 mt-3 md:mt-0">
-            <a href="#">Terms</a>
-            <a href="#">Privacy</a>
-            <a href="#">About</a>
-            <a href="#">FAQ</a>
+            <Link to="/terms">Terms</Link>
+            <Link to="/privacy">Privacy</Link>
+            <Link to="/about">About</Link>
+            <Link to="/faq">FAQ</Link>
           </div>
         </div>
       </div>

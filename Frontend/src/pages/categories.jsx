@@ -1,8 +1,16 @@
+// src/pages/categories.jsx
 import React, { useEffect, useState, useMemo } from "react";
+import { Link } from "react-router-dom";
 
 // Utility for unique categories
 function getCategories(tools) {
   return ["All Categories", ...Array.from(new Set(tools.map(t => t.category || "Other")))];
+}
+
+function makeSlug(name) {
+  return encodeURIComponent(
+    String(name || "tool").toLowerCase().replace(/\s+/g, "-").replace(/[^\w-]/g, "")
+  );
 }
 
 export default function ToolsExplorer() {
@@ -13,7 +21,6 @@ export default function ToolsExplorer() {
   const [category, setCategory] = useState("All Categories");
   const [sort, setSort] = useState("Trending");
   const [visibleCount, setVisibleCount] = useState(20);
-
 
   useEffect(() => {
     fetch("/tools.json")
@@ -50,7 +57,7 @@ export default function ToolsExplorer() {
         (t.category || "").toLowerCase().includes(q)
       );
     }
-    // Sorting (Trending, Top Rated, etc. - only Trending implemented)
+    // Sorting (Trending, Top Rated, etc.)
     if (sort === "Top Rated") {
       result = [...result].sort((a, b) => (b.rating || 0) - (a.rating || 0));
     } else if (sort === "Most Reviewed") {
@@ -123,43 +130,53 @@ export default function ToolsExplorer() {
         ) : (
           <>
             <section className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-5">
-              {filtered.slice(0, visibleCount).map((t) => (
-                <article
-                  key={t.id}
-                  className="bg-white rounded-xl border h-75 border-gray-200 shadow-sm hover:shadow-md transition p-4 flex flex-col justify-between"
-                >
-                  <div className="flex items-start gap-3 ">
-                    <img
-                      src={
-                        t.thumbnail ||
-                        `https://api.dicebear.com/6.x/thumbs/svg?seed=${encodeURIComponent(t.name)}`
-                      }
-                      alt={t.name}
-                      className="h-12 w-12 rounded-md object-cover flex-none"
-                    />
-                    <div className="flex-1 min-w-0">
-                      <div className="flex items-center gap-1 mb-1">
-                        <span className="font-semibold text-base text-gray-900 truncate">{t.name}</span>
-                        {/* {t.sponsored && (
-                          <span className="ml-1 text-xs bg-pink-100 text-pink-600 px-1.5 py-0.5 rounded-full">🎯</span>
-                        )} */}
+              {filtered.slice(0, visibleCount).map((t) => {
+                const id = t.id ?? makeSlug(t.name);
+                const to = `/products/${id}`;
+
+                return (
+                  <Link
+                    to={to}
+                    key={id}
+                    className="no-underline"
+                    aria-label={`View ${t.name}`}
+                  >
+                    <article
+                      className="bg-white rounded-xl border h-75 border-gray-200 shadow-sm hover:shadow-md transition p-4 flex flex-col justify-between"
+                    >
+                      <div className="flex items-start gap-3 ">
+                        <img
+                          src={
+                            t.thumbnail ||
+                            `https://api.dicebear.com/6.x/thumbs/svg?seed=${encodeURIComponent(t.name)}`
+                          }
+                          alt={t.name}
+                          className="h-12 w-12 rounded-md object-cover flex-none"
+                        />
+                        <div className="flex-1 min-w-0">
+                          <div className="flex items-center gap-1 mb-1">
+                            <span className="font-semibold text-base text-gray-900 truncate">{t.name}</span>
+                            {/* {t.sponsored && (
+                              <span className="ml-1 text-xs bg-pink-100 text-pink-600 px-1.5 py-0.5 rounded-full">🎯</span>
+                            )} */}
+                          </div>
+                          <div className="flex items-center gap-1 text-yellow-500"><svg width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M12 17.75L18.16 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.48 4.73L5.82 21z"/></svg> {t.rating || 0}</div>
+                          <p className="text-xs text-gray-500 mb-2 line-clamp-2">{t.tagline}</p>
+                          <div className="flex flex-wrap gap-1">
+                            <span className="bg-gray-100 text-gray-600 text-xs px-2 py-0.5 rounded-full">{t.category || "Other"}</span>
+                            <span className="bg-purple-100 text-purple-600 text-xs px-2 py-0.5 rounded-full">free</span>
+                          </div>
+                        </div>
                       </div>
-                      <div className="flex items-center gap-1 text-yellow-500"><svg width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M12 17.75L18.16 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.48 4.73L5.82 21z"/></svg> {t.rating || 0}</div>
-                      <p className="text-xs text-gray-500 mb-2 line-clamp-2">{t.tagline}</p>
-                      <div className="flex flex-wrap gap-1">
-                        <span className="bg-gray-100 text-gray-600 text-xs px-2 py-0.5 rounded-full">{t.category || "Other"}</span>
-                        {/* Example tag, replace with real tags if available */}
-                        <span className="bg-purple-100 text-purple-600 text-xs px-2 py-0.5 rounded-full">free</span>
+                      {/* Stats row (mocked, as tools.json does not have these fields) */}
+                      <div className="mt-4 flex items-center justify-between text-xs text-gray-400">
+                        <div className="flex items-center gap-1"><svg width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7S1 12 1 12z"/><circle cx="12" cy="12" r="3"/></svg> {t.reviews || 0}</div>
+                        <div className="flex items-center gap-1"><svg width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M12 19V5"/><path d="M5 12l7-7 7 7"/></svg> 0</div>
                       </div>
-                    </div>
-                  </div>
-                  {/* Stats row (mocked, as tools.json does not have these fields) */}
-                  <div className="mt-4 flex items-center justify-between text-xs text-gray-400">
-                    <div className="flex items-center gap-1"><svg width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7S1 12 1 12z"/><circle cx="12" cy="12" r="3"/></svg> {t.reviews || 0}</div>
-                    <div className="flex items-center gap-1"><svg width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M12 19V5"/><path d="M5 12l7-7 7 7"/></svg> 0</div>
-                  </div>
-                </article>
-              ))}
+                    </article>
+                  </Link>
+                );
+              })}
             </section>
             {visibleCount < filtered.length && (
               <div className="flex justify-center mt-8">
@@ -169,7 +186,6 @@ export default function ToolsExplorer() {
                 >
                   Load More Tools
                   <span className="ml-2 align-middle inline-block">
-                    {/* Thin down chevron arrow */}
                     <svg width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
                       <path d="M6 9l6 6 6-6" strokeLinecap="round" strokeLinejoin="round"/>
                     </svg>
