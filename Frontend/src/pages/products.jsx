@@ -127,3 +127,5 @@ const DropdownMenu = ({ topProducts = [], categories = [], trending = [] }) => {
 };
 
 export default DropdownMenu;
+
+

@@ -59,10 +59,10 @@ export default function Launches() {
 
   return (
     <div className="min-h-screen flex flex-col">
-      <div className="max-w-4xl mx-auto py-10 flex-1">
+      <div className="max-w-4xl mx-auto py-30 flex-1">
         <h1 className="text-2xl font-bold mb-6 text-center">Launches</h1>
 
-        <div className="flex justify-center gap-4 mb-8">
+        {/* <div className="flex justify-center gap-4 mb-8">
           <button
             className={`px-4 py-2 rounded-md font-semibold border ${tab === "latest" ? "bg-green-500 text-white" : "bg-white text-green-600"}`}
             onClick={() => goToTab("latest")}
@@ -75,7 +75,7 @@ export default function Launches() {
           >
             Upcoming
           </button>
-        </div>
+        </div> */}
 
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
           {visibleTools.length === 0 ? (
