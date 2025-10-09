@@ -1,39 +1,55 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
-/**
- * DropdownMenu
- * Props:
- * - topProducts: array (items can be strings, React nodes, or objects with .name node/string)
- * - categories: array (items can be strings or React nodes)
- * - trending: array (same shape as topProducts)
- *
- * Renders a segmented control (Top / Categories / Trending).
- * Clicking a tab shows only that list. No page reloads.
- */
 const DropdownMenu = ({ topProducts = [], categories = [], trending = [] }) => {
   const [active, setActive] = useState("top"); // 'top' | 'categories' | 'trending'
-  const [open, setOpen] = useState(false); // for smaller screens / dropdown toggle
+  const [open, setOpen] = useState(false);
+
+  // Debug: log incoming props and active list
+  useEffect(() => {
+    console.log("DropdownMenu props:", { topProducts, categories, trending });
+  }, [topProducts, categories, trending]);
+
+  useEffect(() => {
+    console.log("Active tab:", active, "Open:", open);
+  }, [active, open]);
 
   const renderItem = (item, idx) => {
-    // item could be:
-    // - a React node/string (e.g. categories passed as array of nodes)
-    // - an object like { ...p, name: <Link>...</Link> } or { name: 'Name' }
-    if (item == null) return null;
-    if (typeof item === "string" || React.isValidElement(item)) {
+    if (item == null) {
+      return (
+        <li key={idx} className="py-2 px-3 text-sm text-gray-400">
+          (empty)
+        </li>
+      );
+    }
+
+    // If it's a React element (JSX) render directly
+    if (React.isValidElement(item)) {
       return (
         <li key={idx} className="py-2 px-3 hover:bg-gray-100 rounded">
           {item}
         </li>
       );
     }
-    if (typeof item === "object") {
-      const content = item.name ?? item.label ?? JSON.stringify(item);
+
+    // Primitives (string/number/boolean)
+    if (typeof item === "string" || typeof item === "number" || typeof item === "boolean") {
       return (
         <li key={idx} className="py-2 px-3 hover:bg-gray-100 rounded">
-          {React.isValidElement(content) ? content : String(content)}
+          {String(item)}
         </li>
       );
     }
+
+    // Objects: prefer common fields (name, title, label), else JSON
+    if (typeof item === "object") {
+      const content = item.name ?? item.title ?? item.label ?? item.id ?? JSON.stringify(item);
+      return (
+        <li key={item.id ?? idx} className="py-2 px-3 hover:bg-gray-100 rounded">
+          {String(content)}
+        </li>
+      );
+    }
+
     // fallback
     return (
       <li key={idx} className="py-2 px-3 hover:bg-gray-100 rounded">
@@ -55,7 +71,7 @@ const DropdownMenu = ({ topProducts = [], categories = [], trending = [] }) => {
       <div className="flex items-center justify-between mb-3">
         <div className="inline-flex rounded-lg bg-white shadow-sm ring-1 ring-gray-200">
           <button
-            onClick={() => { setActive("top"); setOpen(false); }}
+            onClick={() => { setActive("top"); setOpen(true); }}
             className={`px-4 py-2 text-sm font-medium rounded-l-lg focus:outline-none ${
               active === "top"
                 ? "bg-green-50 text-green-700 ring-1 ring-green-200"
@@ -65,7 +81,7 @@ const DropdownMenu = ({ topProducts = [], categories = [], trending = [] }) => {
             Top Products
           </button>
           <button
-            onClick={() => { setActive("categories"); setOpen(false); }}
+            onClick={() => { setActive("categories"); setOpen(true); }}
             className={`px-4 py-2 text-sm font-medium focus:outline-none ${
               active === "categories"
                 ? "bg-green-50 text-green-700 ring-1 ring-green-200"
@@ -75,7 +91,7 @@ const DropdownMenu = ({ topProducts = [], categories = [], trending = [] }) => {
             Categories
           </button>
           <button
-            onClick={() => { setActive("trending"); setOpen(false); }}
+            onClick={() => { setActive("trending"); setOpen(true); }}
             className={`px-4 py-2 text-sm font-medium rounded-r-lg focus:outline-none ${
               active === "trending"
                 ? "bg-green-50 text-green-700 ring-1 ring-green-200"
@@ -86,7 +102,7 @@ const DropdownMenu = ({ topProducts = [], categories = [], trending = [] }) => {
           </button>
         </div>
 
-        {/* Optional small-screen dropdown toggle */}
+        {/* small-screen dropdown toggle */}
         <button
           onClick={() => setOpen((s) => !s)}
           aria-expanded={open}
@@ -106,26 +122,26 @@ const DropdownMenu = ({ topProducts = [], categories = [], trending = [] }) => {
 
       {/* Panel */}
       <div className="bg-white rounded-lg shadow-sm ring-1 ring-gray-200">
-        {/* On small screens, toggle visibility */}
-        <div className={`${open ? "block" : "block"}`}>
+        {/* Fix: actually hide on closed */}
+        <div className={`${open ? "block" : "hidden"} md:block`}>
           <ul className="divide-y divide-gray-100 max-h-64 overflow-auto p-2">
-            {activeList().length === 0 ? (
+            {Array.isArray(activeList()) && activeList().length === 0 ? (
               <li className="p-3 text-sm text-gray-500">No items to show.</li>
             ) : (
-              activeList().map((it, i) => renderItem(it, i))
+              (activeList() || []).map((it, i) => renderItem(it, i))
             )}
           </ul>
         </div>
       </div>
 
-      {/* small helper text */}
       <p className="text-xs text-gray-500 mt-2">
-        Showing: <span className="font-medium">{active === "top" ? "Top Products" : active === "categories" ? "Categories" : "Trending"}</span>
+        Showing:{" "}
+        <span className="font-medium">
+          {active === "top" ? "Top Products" : active === "categories" ? "Categories" : "Trending"}
+        </span>
       </p>
     </div>
   );
 };
 
 export default DropdownMenu;
-
-

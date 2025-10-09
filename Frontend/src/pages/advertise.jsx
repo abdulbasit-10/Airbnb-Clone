@@ -9,7 +9,7 @@ export default function AdvertisePage() {
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col items-center py-25">
       {/* Logo at top */}
-      <img src="/logo.svg" alt="Logo" className="h-16 mb-4" />
+      <img src="./advertise.svg" alt="Logo" className="h-16 mb-4" />
 
       {/* Heading */}
       <h1 className="text-2xl sm:text-3xl font-bold text-green-600 text-center mb-2">
@@ -39,7 +39,7 @@ export default function AdvertisePage() {
       </div>
 
       {/* Choose Plan */}
-      <h2 className="text-3xl font-bold text-left mb-6 w-full max-w-5xl">Choose Your Plan</h2>
+      <h2 className="text-3xl font-bold text-left mb-6 w-full max-w-5xl flex justify-center">Choose Your Plan</h2>
       <div className="flex flex-col items-start mb-10 w-full max-w-5xl">
         <div className="bg-white border border-green-200 rounded-xl shadow-lg p-8 w-full max-w-xs flex flex-col items-center">
           <div className="mb-2">
