@@ -1,7 +1,7 @@
 const { GoogleGenerativeAI } = require ("@google/generative-ai");
 
 
-const ai = new GoogleGenerativeAI({ apiKey: "AIzaSyCwHvqQw5JKrNZHBp_kWU5pe15k7g74a_k" });
+const ai = new GoogleGenerativeAI("AIzaSyCwHvqQw5JKrNZHBp_kWU5pe15k7g74a_k");
 
 const blockedKeywords = ["harassment", "violence", "hack", "self-harm", "abuse", "love"];
 
@@ -10,7 +10,7 @@ function containsBlockedKeyword(input) {
   return blockedKeywords.some(keyword => lowerInput.includes(keyword));
 }
 
-async function geminiChatResponse(userQuery) {
+async function geminiChatResponse(userQuery , res) {
   try {
     if (containsBlockedKeyword(userQuery)) {
       return [
@@ -22,41 +22,58 @@ async function geminiChatResponse(userQuery) {
       ];
     }
 
-    // ✅ Ask Gemini to return EXACTLY 10 TOOLS in correct JS array format
-    const prompt = `
-Return EXACTLY 10 AI tools as a valid JavaScript array.
-Each item MUST be in this format:
+const prompt = `
+Return EXACTLY 10 AI tools as a valid JavaScript array. 
+EVERY OBJECT MUST FOLLOW THIS STRUCTURE STRICTLY:
+
 {
-  name: "Tool Name",
-  description: "1 line description only",
-  url: "REAL official logo image URL"
+  name: "Tool Name",                   // must start with name:
+  description: "One short line only",  // must start with description:
+  url: "HTTPS IMAGE LOGO link"         // must be a DIRECT IMAGE URL (.png / .jpg / .svg)
 }
-DO NOT explain. DO NOT add extra text. DO NOT wrap in quotes or JSON.stringify.
+
+RULES — DO NOT BREAK THESE:
+- Keys MUST be exactly: name, description, url (lowercase only)
+- URL MUST BE A DIRECT LOGO IMAGE LINK (NOT a webpage)
+- NO missing keys
+- NO extra keys
+- NO description":
+- NO name":
+- NO quotes before the key
+- NO commentary. NO explanation. NO backticks.
+Return ONLY a VALID JavaScript array.
 The tools must be related to: "${userQuery}"
 `;
 
-    const response = await ai.models.generateContent({
-      model: "gemini-2.0-flash",
+
+const model = ai.getGenerativeModel({ model: "gemini-2.0-flash" });
+    const {response} = await model.generateContent({
       contents: [
-        { role: "user", parts: [{ text: prompt }] }
-      ]
+    { role: "user", parts: [{ text: prompt }] }
+  ]
     });
 
-    const rawText = response?.candidates?.[0]?.content?.parts?.[0]?.text || "";
+    let rawText = response?.candidates?.[0]?.content?.parts?.[0]?.text ;
 
-    // ✅ Try to safely evaluate Gemini JS array response
+    rawText = rawText
+      .replace(/```(json|javascript)?/g, "")
+      .replace(/```/g, "")
+      .replace(/(\w)"\s*:/g, '$1:')      
+      .trim();    
+
+      console.log(rawText)
     let tools = [];
     try {
-      tools = eval(rawText); // Careful: Gemini will output plain JS array
+      tools = Function(`return ${rawText}`)(); 
     } catch (err) {
-      console.error("Eval parsing error:", err);
+      console.error("Parsing failed:", err);
     }
 
-    return Array.isArray(tools) ? tools : [];
+    res.status(200).json(tools);
   } catch (error) {
     console.error("Error fetching Gemini response:", error);
     return [];
   }
 }
 
-module.exports = geminiChatResponse ;
+module.exports = geminiChatResponse ;
