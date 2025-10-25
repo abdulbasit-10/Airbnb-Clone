@@ -14,8 +14,9 @@ export default function Launches() {
 
   // Fetch data
   useEffect(() => {
-    fetch("/tools.json")
+    fetch("http://localhost:3000/api/gemini/latest")
       .then((res) => {
+        console.log(res)
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
         return res.json();
       })
