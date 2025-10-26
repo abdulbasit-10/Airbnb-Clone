@@ -1,5 +1,5 @@
 // src/pages/signIn.jsx
-import React from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 function SignInModal({ setView }) {
@@ -36,6 +36,51 @@ function SignInModal({ setView }) {
     }
     navigate("/");
   };
+
+  const [Form , setForm] = useState({
+    email:'',
+    password:''
+  })
+
+  const handleChange = (e) => {
+    e.preventDefault();
+    const {name , value} = e.target;
+    setForm({
+      ...Form,
+      [name]:value
+    })
+  }
+
+      const sendData = async () => {
+        try {
+          const response = await fetch("http://localhost:3000/api/user/signin", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(Form),
+          });
+
+          const data = await response.json();
+          data.token && localStorage.setItem(data.token);
+          console.log("Server Response:", data);
+        } catch (error) {
+          console.error("Error:", error);
+        }
+      };
+
+      const handleSubmit = (e) => {
+      e.preventDefault();
+      console.log(Form);
+        sendData();
+          if (typeof setView === "function") {
+          try {
+            setView("home");
+          } catch (e) {}
+        }
+      navigate("/");
+      }
+
 
   const handleGoogle = () => {
     // placeholder: integrate your OAuth flow here
@@ -109,6 +154,9 @@ function SignInModal({ setView }) {
             </label>
             <input
               type="email"
+              name="email"
+              onChange={handleChange}
+              value={Form.email}
               placeholder="Enter your email address"
               className="mt-2 w-full px-4 py-3 border border-gray-200 rounded-md focus:outline-none focus:ring-2 focus:ring-green-300"
               aria-label="Email address"
@@ -116,7 +164,8 @@ function SignInModal({ setView }) {
 
             <button
               type="button"
-              onClick={handleContinue}
+              // onClick={handleContinue}
+              onClick={handleSubmit}
               className="mt-5 w-full inline-flex items-center justify-center gap-2 px-4 py-3 bg-green-500 text-white font-medium rounded-md shadow hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-300"
             >
               Continue
