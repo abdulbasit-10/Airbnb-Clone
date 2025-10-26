@@ -13,4 +13,3 @@ router.get('/trending' , ()=> geminiChatResponse("Give me the top 10 trending AI
 
 
 module.exports = router;
-

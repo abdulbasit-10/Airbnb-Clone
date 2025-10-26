@@ -1,7 +1,7 @@
 const { GoogleGenerativeAI } = require ("@google/generative-ai");
 
 
-const ai = new GoogleGenerativeAI({ apiKey: "AIzaSyCwHvqQw5JKrNZHBp_kWU5pe15k7g74a_k" });
+const ai = new GoogleGenerativeAI("AIzaSyCwHvqQw5JKrNZHBp_kWU5pe15k7g74a_k");
 
 const blockedKeywords = ["harassment", "violence", "hack", "self-harm", "abuse", "love"];
 
@@ -34,12 +34,11 @@ Each item MUST be in this format:
 DO NOT explain. DO NOT add extra text. DO NOT wrap in quotes or JSON.stringify.
 The tools must be related to: "${userQuery}"
 `;
-
-    const response = await ai.models.generateContent({
-      model: "gemini-2.0-flash",
+const model = ai.getGenerativeModel({ model: "gemini-2.0-flash" });
+    const response = await model.generateContent({
       contents: [
-        { role: "user", parts: [{ text: prompt }] }
-      ]
+    { role: "user", parts: [{ text: prompt }] }
+  ]
     });
 
     const rawText = response?.candidates?.[0]?.content?.parts?.[0]?.text || "";
@@ -51,6 +50,8 @@ The tools must be related to: "${userQuery}"
     } catch (err) {
       console.error("Eval parsing error:", err);
     }
+    console.log("hello")
+    console.log(tools)
 
     return Array.isArray(tools) ? tools : [];
   } catch (error) {
@@ -60,3 +61,4 @@ The tools must be related to: "${userQuery}"
 }
 
 module.exports = geminiChatResponse ;
+
