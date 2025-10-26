@@ -1,54 +1,39 @@
 // src/pages/Launches.jsx
-import React, { useState, useEffect, useCallback } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import React, { useState, useEffect } from "react";
 import Footer from "../components/footer";
 
 export default function Launches() {
-  const navigate = useNavigate();
-  const location = useLocation();
-
-  const [tab, setTab] = useState("latest");
   const [tools, setTools] = useState([]);
   const [visibleCount, setVisibleCount] = useState(6);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   const API_BASE = import.meta.env.VITE_API_URL || "http://localhost:3000";
+  const ENDPOINT = `${API_BASE}/api/gemini/latest`; // ✅ Always load from your main endpoint
 
-  // ✅ Correctly handle backend endpoint for both tabs
-  const getEndpoint = useCallback(
-    (t) => {
-      if (t === "upcoming") return `${API_BASE}/api/gemini/upcomming`; // 👈 your backend route
-      return `${API_BASE}/api/gemini/latest`;
-    },
-    [API_BASE]
-  );
-
-  // Fetch data
   useEffect(() => {
-    const ENDPOINT = getEndpoint(tab);
     setLoading(true);
     setError(null);
     setTools([]);
     setVisibleCount(6);
 
-    console.info("➡️ Fetching launches from:", ENDPOINT);
+    console.info("➡ Fetching tools from:", ENDPOINT);
 
     fetch(ENDPOINT)
       .then(async (res) => {
-        console.info("⤴️ Response status:", res.status, res.statusText);
-        console.info("⤴️ Content-Type:", res.headers.get("content-type"));
+        console.info("⤴ Response status:", res.status, res.statusText);
         if (!res.ok) {
           const txt = await res.text().catch(() => "");
           throw new Error(`HTTP ${res.status} - ${txt}`);
         }
+
         const data = await res.json().catch((e) => {
-          throw new Error("Invalid JSON response: " + e.message);
+          throw new Error("Invalid JSON: " + e.message);
         });
 
-        console.log("✅ Raw JSON from server:", data);
+        console.log("✅ Raw JSON:", data);
 
-        // Try to find the array in common wrappers
+        // Identify array
         let arr = null;
         if (Array.isArray(data)) arr = data;
         else if (Array.isArray(data.data)) arr = data.data;
@@ -56,136 +41,65 @@ export default function Launches() {
         else if (Array.isArray(data.result)) arr = data.result;
         else if (Array.isArray(data.items)) arr = data.items;
 
-        // fallback: pick the first array property
         if (!arr && data && typeof data === "object") {
           const firstArrayProp = Object.keys(data).find((k) => Array.isArray(data[k]));
           if (firstArrayProp) arr = data[firstArrayProp];
         }
 
         if (!arr) {
-          console.warn("⚠️ No array found in JSON. Full response saved to `tools` as single item.");
+          console.warn("⚠ No array found, saving full object as single item.");
           setTools([data]);
           setLoading(false);
           return;
         }
 
         // Normalize items
-        const normalized = arr.map((it, idx) => {
-          const id = it.id ?? it._id ?? `${Date.now()}-${idx}`;
-          const rawStatus = String(it.status ?? it.type ?? it.state ?? "").toLowerCase();
-          let statusNormalized = "latest";
-          if (rawStatus.includes("upcom") || rawStatus.includes("soon") || rawStatus.includes("coming")) {
-            statusNormalized = "upcoming";
-          } else if (rawStatus.includes("new") || rawStatus.includes("latest") || rawStatus.includes("released")) {
-            statusNormalized = "latest";
-          }
-          return {
-            id,
-            name: it.name ?? it.title ?? "Untitled",
-            description: it.description ?? it.desc ?? "",
-            url: it.url ?? it.link ?? "#",
-            pricing: it.pricing ?? null,
-            views: it.views ?? it.viewCount ?? 0,
-            category: it.category ?? it.cat ?? "",
-            __raw: it,
-            status: statusNormalized,
-          };
-        });
-
-        const uniqueStatuses = Array.from(new Set(normalized.map((t) => t.status).filter(Boolean)));
-        console.info("ℹ️ Loaded items:", normalized.length, "unique normalized statuses:", uniqueStatuses);
+        const normalized = arr.map((it, idx) => ({
+          id: it.id ?? it._id ?? `${Date.now()}-${idx}`,
+          name: it.name ?? it.title ?? "Untitled",
+          description: it.description ?? it.desc ?? "",
+          url: it.url ?? it.link ?? "#",
+          pricing: it.pricing ?? null,
+          views: it.views ?? it.viewCount ?? 0,
+          category: it.category ?? it.cat ?? "",
+        }));
 
         setTools(normalized);
         setLoading(false);
       })
       .catch((err) => {
-        console.error("❌ Failed to load launches:", err);
-        setError(err.message || "Failed to fetch data");
-        setTools([]);
+        console.error("❌ Fetch failed:", err);
+        setError(err.message || "Failed to fetch tools");
         setLoading(false);
       });
-  }, [tab, getEndpoint]);
+  }, [ENDPOINT]);
 
-  // update tab when URL changes
-  useEffect(() => {
-    const parts = location.pathname.split("/").filter(Boolean);
-    const next = parts[1] === "upcoming" ? "upcoming" : "latest";
-    if (next !== tab) setTab(next);
-    setVisibleCount(6);
-  }, [location.pathname, tab]);
-
-  // default redirect to /launches/latest
-  useEffect(() => {
-    const parts = location.pathname.split("/").filter(Boolean);
-    if (parts.length === 1) navigate("/launches/latest", { replace: true });
-  }, [location.pathname, navigate]);
-
-  const goToTab = (t) => {
-    const path = t === "latest" ? "/launches/latest" : "/launches/upcoming";
-    navigate(path);
-    setTab(t);
-    setVisibleCount(6);
-  };
-
-  const filtered = tools.filter((t) => t.status === tab);
-  const visibleTools = filtered.slice(0, visibleCount);
-  const canLoadMore = visibleCount < filtered.length;
+  const visibleTools = tools.slice(0, visibleCount);
+  const canLoadMore = visibleCount < tools.length;
 
   return (
     <div className="min-h-screen flex flex-col bg-gray-50">
       <div className="max-w-6xl mx-auto w-full px-4 py-30 flex-1">
-        {/* Header Section */}
-        {tab === "latest" ? (
-          <div className="text-center mb-10">
-            <div className="flex items-center justify-center mb-2">
-              <span className="text-purple-500 text-3xl">⚡</span>
-            </div>
-            <h1 className="text-4xl font-bold text-purple-700 mb-2">Latest AI Tool Launches</h1>
-            <p className="text-gray-600">
-              Discover the newest AI tools and innovations. Be among the first to explore and try out these cutting-edge solutions.
-            </p>
+        {/* Header */}
+        <div className="text-center mb-10">
+          <div className="flex items-center justify-center mb-2">
+            <span className="text-purple-500 text-3xl">⚡</span>
           </div>
-        ) : (
-          <div className="text-center mb-10">
-            <div className="flex items-center justify-center mb-2">
-              <span className="text-purple-500 text-3xl">⭐</span>
-            </div>
-            <h1 className="text-4xl font-bold text-purple-700 mb-2">Upcoming AI Tools</h1>
-            <p className="text-gray-600">
-              Get a sneak peek at the most anticipated AI tools launching soon. Subscribe to be notified when they go live.
-            </p>
-          </div>
-        )}
-
-        {/* Tabs */}
-        <div className="flex justify-center gap-3 mb-10">
-          <button
-            onClick={() => goToTab("latest")}
-            className={`px-4 py-2 rounded-full font-semibold border ${
-              tab === "latest" ? "bg-green-500 text-white" : "bg-white text-green-600 border-green-500"
-            }`}
-          >
-            Latest
-          </button>
-          <button
-            onClick={() => goToTab("upcoming")}
-            className={`px-4 py-2 rounded-full font-semibold border ${
-              tab === "upcoming" ? "bg-green-500 text-white" : "bg-white text-green-600 border-green-500"
-            }`}
-          >
-            Upcoming
-          </button>
+          <h1 className="text-4xl font-bold text-purple-700 mb-2">Latest AI Tools</h1>
+          <p className="text-gray-600">
+            Discover the most recent AI tools and innovations from across the web.
+          </p>
         </div>
 
         {/* Error / Loading / Empty States */}
         {loading && <div className="text-center text-gray-500">Loading tools...</div>}
         {!loading && error && <div className="text-center text-red-500">Error: {error}</div>}
-        {!loading && !error && filtered.length === 0 && (
-          <div className="text-center text-gray-400">No tools found for this tab.</div>
+        {!loading && !error && tools.length === 0 && (
+          <div className="text-center text-gray-400">No tools found.</div>
         )}
 
-        {/* Latest Tools */}
-        {!loading && tab === "latest" && filtered.length > 0 && (
+        {/* Tools Grid */}
+        {!loading && !error && tools.length > 0 && (
           <>
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
               {visibleTools.map((tool) => (
@@ -195,14 +109,15 @@ export default function Launches() {
                 >
                   <div>
                     <div className="flex items-center justify-between mb-2">
-                      <span className="text-xs bg-green-100 text-green-600 px-2 py-1 rounded-full font-semibold">New</span>
+                      <span className="text-xs bg-green-100 text-green-600 px-2 py-1 rounded-full font-semibold">
+                        New
+                      </span>
                       {tool.pricing && (
                         <span className="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded-full">
                           {tool.pricing}
                         </span>
                       )}
                     </div>
-
                     <div className="font-semibold text-gray-800 truncate mb-1">{tool.name}</div>
                     <p className="text-sm text-gray-500 line-clamp-3 mb-4">{tool.description}</p>
                   </div>
@@ -237,37 +152,9 @@ export default function Launches() {
             )}
           </>
         )}
-
-        {/* Upcoming Tools */}
-        {!loading && tab === "upcoming" && filtered.length > 0 && (
-          <div className="space-y-6">
-            {visibleTools.map((tool) => (
-              <div
-                key={tool.id}
-                className="bg-white rounded-xl shadow p-6 flex flex-col md:flex-row justify-between items-start md:items-center gap-4 transition-all duration-200"
-              >
-                <div className="flex-1">
-                  <h2 className="text-lg font-semibold text-gray-800 mb-2">{tool.name}</h2>
-                  <p className="text-gray-600 text-sm mb-3">{tool.description}</p>
-                  <div className="text-sm text-gray-500">{tool.category}</div>
-                </div>
-
-                <div className="flex flex-col items-end gap-2">
-                  <span className="text-xs bg-purple-100 text-purple-600 px-3 py-1 rounded-full font-semibold">
-                    Coming Soon
-                  </span>
-                  <button className="px-4 py-2 bg-green-500 text-white rounded-md text-sm font-semibold shadow hover:bg-green-600">
-                    Get Notified
-                  </button>
-                </div>
-              </div>
-            ))}
-          </div>
-        )}
       </div>
 
       <Footer />
     </div>
   );
 }
-

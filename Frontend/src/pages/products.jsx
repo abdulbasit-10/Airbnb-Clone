@@ -1,147 +1,204 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState, useMemo } from "react";
+import { Link } from "react-router-dom";
 
-const DropdownMenu = ({ topProducts = [], categories = [], trending = [] }) => {
-  const [active, setActive] = useState("top"); // 'top' | 'categories' | 'trending'
-  const [open, setOpen] = useState(false);
+// Utility for unique categories
+function getCategories(tools) {
+  return ["All Categories", ...Array.from(new Set(tools.map(t => t.category || "Other")))];
+}
 
-  // Debug: log incoming props and active list
+function makeSlug(name) {
+  return encodeURIComponent(
+    String(name || "tool").toLowerCase().replace(/\s+/g, "-").replace(/[^\w-]/g, "")
+  );
+}
+
+export default function DropdownMenu() {
+  const [tools, setTools] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [search, setSearch] = useState("");
+  const [category, setCategory] = useState("All Categories");
+  const [sort, setSort] = useState("Trending");
+  const [visibleCount, setVisibleCount] = useState(20);
+
   useEffect(() => {
-    console.log("DropdownMenu props:", { topProducts, categories, trending });
-  }, [topProducts, categories, trending]);
+    fetch("/tools.json")
+      .then((res) => res.json())
+      .then((data) => {
+        setTools(Array.isArray(data) ? data : []);
+        setLoading(false);
+      })
+      .catch(() => {
+        setError("Could not load tools data.");
+        setLoading(false);
+      });
+  }, []);
 
+  // Reset visibleCount when filters/search change
   useEffect(() => {
-    console.log("Active tab:", active, "Open:", open);
-  }, [active, open]);
+    setVisibleCount(20);
+  }, [search, category, sort, tools]);
 
-  const renderItem = (item, idx) => {
-    if (item == null) {
-      return (
-        <li key={idx} className="py-2 px-3 text-sm text-gray-400">
-          (empty)
-        </li>
+  // Categories for dropdown
+  const categories = useMemo(() => getCategories(tools), [tools]);
+
+  // Filtered and sorted tools
+  const filtered = useMemo(() => {
+    let result = tools;
+    if (category !== "All Categories") {
+      result = result.filter(t => (t.category || "Other") === category);
+    }
+    if (search.trim()) {
+      const q = search.trim().toLowerCase();
+      result = result.filter(t =>
+        (t.name || "").toLowerCase().includes(q) ||
+        (t.tagline || "").toLowerCase().includes(q) ||
+        (t.category || "").toLowerCase().includes(q)
       );
     }
-
-    // If it's a React element (JSX) render directly
-    if (React.isValidElement(item)) {
-      return (
-        <li key={idx} className="py-2 px-3 hover:bg-gray-100 rounded">
-          {item}
-        </li>
-      );
+    if (sort === "Top Rated") {
+      result = [...result].sort((a, b) => (b.rating || 0) - (a.rating || 0));
+    } else if (sort === "Most Reviewed") {
+      result = [...result].sort((a, b) => (b.reviews || 0) - (a.reviews || 0));
     }
-
-    // Primitives (string/number/boolean)
-    if (typeof item === "string" || typeof item === "number" || typeof item === "boolean") {
-      return (
-        <li key={idx} className="py-2 px-3 hover:bg-gray-100 rounded">
-          {String(item)}
-        </li>
-      );
-    }
-
-    // Objects: prefer common fields (name, title, label), else JSON
-    if (typeof item === "object") {
-      const content = item.name ?? item.title ?? item.label ?? item.id ?? JSON.stringify(item);
-      return (
-        <li key={item.id ?? idx} className="py-2 px-3 hover:bg-gray-100 rounded">
-          {String(content)}
-        </li>
-      );
-    }
-
-    // fallback
-    return (
-      <li key={idx} className="py-2 px-3 hover:bg-gray-100 rounded">
-        {String(item)}
-      </li>
-    );
-  };
-
-  const activeList = () => {
-    if (active === "top") return topProducts;
-    if (active === "categories") return categories;
-    if (active === "trending") return trending;
-    return [];
-  };
+    return result;
+  }, [tools, search, category, sort]);
 
   return (
-    <div className="relative w-full">
-      {/* Segmented control */}
-      <div className="flex items-center justify-between mb-3">
-        <div className="inline-flex rounded-lg bg-white shadow-sm ring-1 ring-gray-200">
-          <button
-            onClick={() => { setActive("top"); setOpen(true); }}
-            className={`px-4 py-2 text-sm font-medium rounded-l-lg focus:outline-none ${
-              active === "top"
-                ? "bg-green-50 text-green-700 ring-1 ring-green-200"
-                : "text-gray-600 hover:bg-gray-50"
-            }`}
-          >
-            Top Products
-          </button>
-          <button
-            onClick={() => { setActive("categories"); setOpen(true); }}
-            className={`px-4 py-2 text-sm font-medium focus:outline-none ${
-              active === "categories"
-                ? "bg-green-50 text-green-700 ring-1 ring-green-200"
-                : "text-gray-600 hover:bg-gray-50"
-            }`}
-          >
-            Categories
-          </button>
-          <button
-            onClick={() => { setActive("trending"); setOpen(true); }}
-            className={`px-4 py-2 text-sm font-medium rounded-r-lg focus:outline-none ${
-              active === "trending"
-                ? "bg-green-50 text-green-700 ring-1 ring-green-200"
-                : "text-gray-600 hover:bg-gray-50"
-            }`}
-          >
-            Trending
-          </button>
+    <div className="min-h-screen bg-gray-50 py-10 px-4 sm:px-6 lg:px-8 mt-40">
+      <div className="w-[95%] mx-auto">
+        {/* Header */}
+        <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-6">
+          <div>
+            <h1 className="text-2xl md:text-3xl font-bold text-gray-900">Top Products</h1>
+            <p className="text-gray-500 text-sm md:text-base mt-1">
+              Explore trending and top-rated AI tools from our collection.
+            </p>
+          </div>
+
+          {/* Controls */}
+          <div className="flex items-center gap-4 mt-4 md:mt-0">
+            <input
+              type="search"
+              className="px-4 py-2 rounded-md border border-gray-200 shadow-sm focus:outline-none focus:ring-2 focus:ring-green-400 w-48"
+              placeholder="Search tools..."
+              value={search}
+              onChange={e => setSearch(e.target.value)}
+            />
+            <select
+              className="px-3 py-2 rounded-md border border-gray-200 bg-white text-gray-700 cursor-pointer"
+              value={category}
+              onChange={e => setCategory(e.target.value)}
+            >
+              {categories.map(c => (
+                <option key={c} value={c}>{c}</option>
+              ))}
+            </select>
+            <select
+              className="px-3 py-2 rounded-md border border-gray-200 bg-white text-gray-700 cursor-pointer"
+              value={sort}
+              onChange={e => setSort(e.target.value)}
+            >
+              <option value="Trending">Trending</option>
+              <option value="Top Rated">Top Rated</option>
+              <option value="Most Reviewed">Most Reviewed</option>
+            </select>
+          </div>
         </div>
 
-        {/* small-screen dropdown toggle */}
-        <button
-          onClick={() => setOpen((s) => !s)}
-          aria-expanded={open}
-          className="ml-3 inline-flex items-center px-3 py-2 border rounded-md text-sm bg-white ring-1 ring-gray-200 hover:bg-gray-50"
-        >
-          View
-          <svg
-            className={`w-4 h-4 ml-2 transition-transform ${open ? "transform rotate-180" : ""}`}
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
-          </svg>
-        </button>
-      </div>
+        {/* Results Count */}
+        <div className="mb-4 text-gray-600 text-sm">
+          Showing <span className="font-semibold">{filtered.length}</span> results
+        </div>
 
-      {/* Panel */}
-      <div className="bg-white rounded-lg shadow-sm ring-1 ring-gray-200">
-        {/* Fix: actually hide on closed */}
-        <div className={`${open ? "block" : "hidden"} md:block`}>
-          <ul className="divide-y divide-gray-100 max-h-64 overflow-auto p-2">
-            {Array.isArray(activeList()) && activeList().length === 0 ? (
-              <li className="p-3 text-sm text-gray-500">No items to show.</li>
-            ) : (
-              (activeList() || []).map((it, i) => renderItem(it, i))
+        {/* Tool Cards */}
+        {loading ? (
+          <div className="text-center py-12 text-slate-500">Loading tools…</div>
+        ) : error ? (
+          <div className="text-center py-12 text-red-600">{error}</div>
+        ) : filtered.length === 0 ? (
+          <div className="text-center py-12 text-slate-500">No tools found.</div>
+        ) : (
+          <>
+            <section className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-5">
+              {filtered.slice(0, visibleCount).map((t) => {
+                const id = t.id ?? makeSlug(t.name);
+                const to = `/products/${id}`;
+                return (
+                  <Link
+                    to={to}
+                    key={id}
+                    className="no-underline"
+                    aria-label={`View ${t.name}`}
+                  >
+                    <article className="bg-white rounded-xl border h-75 border-gray-200 shadow-sm hover:shadow-md transition p-4 flex flex-col justify-between">
+                      <div className="flex items-start gap-3">
+                        <img
+                          src={
+                            t.thumbnail ||
+                            `https://api.dicebear.com/6.x/thumbs/svg?seed=${encodeURIComponent(t.name)}`
+                          }
+                          alt={t.name}
+                          className="h-12 w-12 rounded-md object-cover flex-none"
+                        />
+                        <div className="flex-1 min-w-0">
+                          <div className="flex items-center gap-1 mb-1">
+                            <span className="font-semibold text-base text-gray-900 truncate">
+                              {t.name}
+                            </span>
+                          </div>
+                          <div className="flex items-center gap-1 text-yellow-500">
+                            <svg width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                              <path d="M12 17.75L18.16 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.48 4.73L5.82 21z"/>
+                            </svg>
+                            {t.rating || 0}
+                          </div>
+                          <p className="text-xs text-gray-500 mb-2 line-clamp-2">{t.tagline}</p>
+                          <div className="flex flex-wrap gap-1">
+                            <span className="bg-gray-100 text-gray-600 text-xs px-2 py-0.5 rounded-full">{t.category || "Other"}</span>
+                            <span className="bg-purple-100 text-purple-600 text-xs px-2 py-0.5 rounded-full">free</span>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="mt-4 flex items-center justify-between text-xs text-gray-400">
+                        <div className="flex items-center gap-1">
+                          <svg width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                            <path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7S1 12 1 12z"/>
+                            <circle cx="12" cy="12" r="3"/>
+                          </svg>
+                          {t.reviews || 0}
+                        </div>
+                        <div className="flex items-center gap-1">
+                          <svg width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                            <path d="M12 19V5"/>
+                            <path d="M5 12l7-7 7 7"/>
+                          </svg>
+                          0
+                        </div>
+                      </div>
+                    </article>
+                  </Link>
+                );
+              })}
+            </section>
+            {visibleCount < filtered.length && (
+              <div className="flex justify-center mt-8">
+                <button
+                  className="w-[100%] cursor-pointer py-3 rounded-lg bg-purple-50 text-purple-600 font-medium hover:bg-purple-100 transition"
+                  onClick={() => setVisibleCount((c) => c + 10)}
+                >
+                  Load More Tools
+                  <span className="ml-2 align-middle inline-block">
+                    <svg width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                      <path d="M6 9l6 6 6-6" strokeLinecap="round" strokeLinejoin="round"/>
+                    </svg>
+                  </span>
+                </button>
+              </div>
             )}
-          </ul>
-        </div>
+          </>
+        )}
       </div>
-
-      <p className="text-xs text-gray-500 mt-2">
-        Showing:{" "}
-        <span className="font-medium">
-          {active === "top" ? "Top Products" : active === "categories" ? "Categories" : "Trending"}
-        </span>
-      </p>
     </div>
   );
-};
-
-export default DropdownMenu;
+}
