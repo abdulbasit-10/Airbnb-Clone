@@ -1,5 +1,5 @@
 // src/pages/signUp.jsx
-import React from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 function SignUpModal({ setView }) {
@@ -39,6 +39,55 @@ function SignUpModal({ setView }) {
     console.log("Google sign up clicked");
     handleContinue();
   };
+    const [Form , setForm] = useState({
+      email:'',
+      password:''
+    })
+  
+    const handleChange = (e) => {
+      e.preventDefault();
+      const {name , value} = e.target;
+      setForm({
+        ...Form,
+        [name]:value
+      })
+    }
+
+    const handleSubmit = (e) => {
+      e.preventDefault();
+      console.log(Form);
+
+    if (typeof setView === "function") {
+      try {
+        setView("home");
+      } catch (e) {}
+    }
+    navigate("/");
+      // Example: POST request using fetch()
+
+      const sendData = async () => {
+        try {
+          const response = await fetch("http://localhost:3000/api/user/signup", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(Form),
+          });
+
+          const data = await response.json();
+          localStorage.setItem(data.token);
+          console.log("Server Response:", data);
+        } catch (error) {
+          console.error("Error:", error);
+        }
+      };
+
+      sendData();
+
+
+
+    }
 
   return (
     <div
@@ -63,7 +112,7 @@ function SignUpModal({ setView }) {
             ✕
           </button>
 
-          <div className="p-6 sm:p-8">
+          <form className="p-6 sm:p-8" onSubmit={handleSubmit}>
             <h2 className="text-center text-xl sm:text-2xl font-semibold text-gray-800">
               Create your account
             </h2>
@@ -105,6 +154,9 @@ function SignUpModal({ setView }) {
             </label>
             <input
               type="email"
+              name="email"
+              onChange={handleChange}
+              value={Form.email}
               placeholder="Enter your email address"
               className="mt-2 w-full px-4 py-3 border border-gray-200 rounded-md focus:outline-none focus:ring-2 focus:ring-green-300"
               aria-label="Email address"
@@ -117,6 +169,9 @@ function SignUpModal({ setView }) {
             <div className="relative mt-2">
               <input
                 type="password"
+                name="password"
+                onChange={handleChange}
+                value={Form.password}
                 placeholder="Enter your password"
                 className="w-full px-4 py-3 border border-gray-200 rounded-md focus:outline-none focus:ring-2 focus:ring-green-300 pr-12"
                 aria-label="Password"
@@ -135,8 +190,8 @@ function SignUpModal({ setView }) {
             </div>
 
             <button
-              type="button"
-              onClick={handleContinue}
+              type="submit"
+              // onClick={handleContinue}
               className="mt-5 w-full inline-flex items-center justify-center gap-2 px-4 py-2 bg-green-400 text-white font-medium rounded-md shadow hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-300"
             >
               Continue
@@ -152,7 +207,7 @@ function SignUpModal({ setView }) {
                 Sign in
               </button>
             </div>
-          </div>
+          </form>
 
           {/* Footer */}
           <div className="bg-amber-50 border-t border-amber-100 px-6 py-3 text-center text-sm text-gray-600">

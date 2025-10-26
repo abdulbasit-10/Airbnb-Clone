@@ -39,13 +39,30 @@ export default function SubmitTool({ onClose }) {
     setForm((f) => ({ ...f, [name]: value }));
   };
 
+     const sendData = async () => {
+        try {
+          const response = await fetch("http://localhost:3000/api/tool", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(form),
+          });
+
+          const data = await response.json();
+          // localStorage.setItem(data.token);
+          console.log("Server Response:", data);
+        } catch (error) {
+          console.error("Error:", error);
+        }
+      };
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    // TODO: Submit logic here (call your backend API)
-    // For demo keep behaviour: notify, reset and close
-    alert("Tool submitted! (Demo only)");
+    console.log(form)
+    sendData();
+    
     setForm(initialState);
-
     // call unified close (onClose or navigate)
     close();
   };
